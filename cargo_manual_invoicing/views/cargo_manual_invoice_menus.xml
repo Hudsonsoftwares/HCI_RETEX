@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top-level App Menu -->
+    <menuitem id="menu_cargo_invoicing_root"
+              name="Cargo Invoicing"
+              web_icon="cargo_manual_invoicing,static/description/icon.png"
+              sequence="90"/>
+
+    <!-- Sub-menu -->
+    <menuitem id="menu_cargo_invoicing_main"
+              name="Invoices"
+              parent="menu_cargo_invoicing_root"
+              sequence="10"/>
+
+    <menuitem id="menu_cargo_manual_invoice"
+              name="Cargo Invoices"
+              parent="menu_cargo_invoicing_main"
+              action="action_cargo_manual_invoice"
+              sequence="10"/>
+
+</odoo>
