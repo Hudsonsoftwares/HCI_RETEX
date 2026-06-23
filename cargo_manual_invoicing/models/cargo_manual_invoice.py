@@ -2,11 +2,13 @@ from odoo import models, fields, api
 # pyrefly: ignore [missing-import]
 from odoo.exceptions import ValidationError
 import re
+import base64
 
 
 class CargoManualInvoice(models.Model):
     _name = 'cargo.manual.invoice'
     _description = 'Cargo Manual Invoice'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
     _rec_name = 'invoice_number'
 
@@ -16,22 +18,30 @@ class CargoManualInvoice(models.Model):
         readonly=True,
         copy=False,
         default='New',
+        tracking=True,
     )
     shipping_date = fields.Datetime(
         string='Shipping Date',
         default=fields.Datetime.now,
         required=True,
+        tracking=True,
     )
     shipment_type = fields.Selection(
         [('domestic', 'Domestic'), ('international', 'International')],
         string='Shipment Type',
         default='international',
         required=True,
+        tracking=True,
     )
     agent_name = fields.Char(
         string='User',
         default=lambda self: self.env.user.name,
         readonly=True,
+    )
+    email_sent = fields.Boolean(
+        string='Email Sent',
+        default=False,
+        copy=False,
     )
 
     # ── Shipper Info ───────────────────────────────────────────────────
@@ -66,7 +76,7 @@ class CargoManualInvoice(models.Model):
         default='cash',
         required=True,
     )
-    status = fields.Char(string='Status', default='ORDER PLACED', required=True)
+    status = fields.Char(string='Status', default='ORDER PLACED', required=True, tracking=True)
 
     # ── Financials ─────────────────────────────────────────────────────
     net_amount = fields.Float(string='Net Amount', required=True)
@@ -76,6 +86,7 @@ class CargoManualInvoice(models.Model):
         string='Gross Total',
         compute='_compute_gross_total',
         store=True,
+        tracking=True,
     )
 
     @api.depends('net_amount', 'vat_amount', 'extra_charge')
@@ -145,3 +156,162 @@ class CargoManualInvoice(models.Model):
         return self.env.ref(
             'cargo_manual_invoicing.action_report_cargo_invoice'
         ).report_action(self)
+
+    def _get_invoice_pdf(self):
+        """Generate the invoice PDF and return as base64."""
+        report = self.env.ref('cargo_manual_invoicing.action_report_cargo_invoice')
+        pdf_content, _ = self.env['ir.actions.report']._render_qweb_pdf(
+            report, self.ids
+        )
+        return base64.b64encode(pdf_content)
+
+    def action_send_email(self):
+        """Send invoice PDF to both shipper and receiver emails."""
+        self.ensure_one()
+
+        # Collect recipient emails
+        recipients = []
+        if self.shipper_email:
+            recipients.append(self.shipper_email)
+        if self.receiver_email and self.receiver_email not in recipients:
+            recipients.append(self.receiver_email)
+
+        if not recipients:
+            raise ValidationError(
+                'No email addresses found!\n'
+                'Please fill in Shipper Email or Receiver Email before sending.'
+            )
+
+        # Generate PDF attachment
+        pdf_data = self._get_invoice_pdf()
+        attachment = self.env['ir.attachment'].create({
+            'name': '%s.pdf' % self.invoice_number.replace('/', '-'),
+            'type': 'binary',
+            'datas': pdf_data,
+            'res_model': self._name,
+            'res_id': self.id,
+            'mimetype': 'application/pdf',
+        })
+
+        # Build email body
+        body_html = """
+        <div style="font-family: Arial, sans-serif; max-width: 620px; margin: 0 auto; border: 1px solid #ddd;">
+            <div style="background: #000; color: #fff; padding: 20px; text-align: center;">
+                <h2 style="margin: 0; font-size: 18px;">BRIGHTNESS OF HOPE AIR CARGO EST</h2>
+                <p style="margin: 5px 0 0; font-size: 15px;">مؤسسة سطوع الأمل للشحن الجوي</p>
+                <p style="margin: 8px 0 0; font-size: 11px; color: #aaa;">CR: 1010791259 | VAT: 311239685900003</p>
+            </div>
+            <div style="background: #f5f5f5; padding: 15px 20px; border-bottom: 1px solid #ddd;">
+                <h3 style="margin: 0; color: #111;">Invoice: %s</h3>
+                <p style="margin: 5px 0 0; color: #555; font-size: 13px;">
+                    Date: %s | Type: %s
+                </p>
+            </div>
+            <div style="padding: 20px;">
+                <table style="width: 100%%; border-collapse: collapse;">
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; width: 30%%;">From (Shipper)</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">%s<br/><span style="color: #666; font-size: 12px;">%s</span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">To (Receiver)</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">%s<br/><span style="color: #666; font-size: 12px;">%s</span></td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Carrier</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">%s</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Airway Bill</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">%s</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Weight / Pieces</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">%s kg / %s pcs</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Product</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">%s</td>
+                    </tr>
+                </table>
+                <table style="width: 100%%; border-collapse: collapse; margin-top: 15px;">
+                    <tr>
+                        <td style="padding: 8px 10px; border: 1px solid #ddd; color: #555;">Net Amount</td>
+                        <td style="padding: 8px 10px; border: 1px solid #ddd; text-align: right; font-weight: 600;">%.2f SAR</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 10px; border: 1px solid #ddd; color: #555;">VAT 15%%</td>
+                        <td style="padding: 8px 10px; border: 1px solid #ddd; text-align: right; font-weight: 600;">%.2f SAR</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 10px; border: 1px solid #ddd; color: #555;">Extra Charge</td>
+                        <td style="padding: 8px 10px; border: 1px solid #ddd; text-align: right; font-weight: 600;">%.2f SAR</td>
+                    </tr>
+                </table>
+                <div style="background: #000; color: #fff; padding: 15px; text-align: center; margin-top: -1px; font-size: 20px; font-weight: 800;">
+                    GROSS TOTAL: %.2f SAR
+                </div>
+                <p style="margin-top: 15px; color: #555; font-size: 12px; line-height: 1.6;">
+                    Please find the full invoice attached as a PDF document.<br/>
+                    For any queries, contact us at: <strong>0574436896 / 0573370566</strong>
+                </p>
+            </div>
+            <div style="background: #222; color: #999; padding: 12px 20px; text-align: center; font-size: 10px; line-height: 1.6;">
+                Brightness of Hope Air Cargo Est<br/>
+                Riyadh-Al Aziziyah, Abu Saad Al-Wazir Street, Saudi Arabia
+            </div>
+        </div>
+        """ % (
+            self.invoice_number or '',
+            self.shipping_date or '',
+            (self.shipment_type or '').upper(),
+            self.shipper_name or '',
+            self.origin or '',
+            self.receiver_name or '',
+            self.destination or '',
+            self.carrier or '-',
+            self.airway_bill or '-',
+            self.weight,
+            self.pieces,
+            self.product_info or '-',
+            self.net_amount,
+            self.vat_amount,
+            self.extra_charge,
+            self.gross_total,
+        )
+
+        # Send to each recipient
+        mail_values = {
+            'subject': 'Cargo Invoice %s — Brightness of Hope Air Cargo' % self.invoice_number,
+            'body_html': body_html,
+            'email_from': self.env.user.email_formatted or self.env.company.email,
+            'attachment_ids': [(4, attachment.id)],
+        }
+
+        for email_addr in recipients:
+            mail = self.env['mail.mail'].sudo().create(dict(
+                mail_values,
+                email_to=email_addr,
+            ))
+            mail.send()
+
+        # Mark as sent and log in chatter
+        self.email_sent = True
+        self.message_post(
+            body='Invoice emailed to: %s' % ', '.join(recipients),
+            message_type='notification',
+            subtype_xmlid='mail.mt_note',
+        )
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Email Sent Successfully!',
+                'message': 'Invoice %s sent to: %s' % (
+                    self.invoice_number, ', '.join(recipients)
+                ),
+                'type': 'success',
+                'sticky': False,
+            }
+        }

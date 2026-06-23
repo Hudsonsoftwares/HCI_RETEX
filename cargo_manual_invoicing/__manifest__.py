@@ -8,10 +8,11 @@
         - Manual data-entry form for shipment details
         - Dual-language (Arabic/English) QWeb PDF report
         - Reporting with Graph and Pivot views
+        - Email invoice to shipper and receiver
         - Independent of Odoo native Accounting/Invoicing
     """,
     'author': 'Brightness of Hope Air Cargo Est',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'data': [
         'security/ir.model.access.csv',
         'data/sequence_data.xml',
