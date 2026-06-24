@@ -151,7 +151,7 @@
                                 <group string="Cargo Details — معلومات الشحن">
                                     <field name="weight" string="Weight (kg)" placeholder="0.00"/>
                                     <field name="pieces" string="Pieces" placeholder="1"/>
-                                    <field name="carrier" string="Carrier" placeholder="e.g. Aramex, DHL"/>
+                                    <field name="carrier" string="Carrier" placeholder="e.g. Aramex, DHL" readonly="carrier"/>
                                     <field name="airway_bill" string="Airway Bill" placeholder="Tracking number"/>
                                     <field name="product_info" string="Product Info" placeholder="Describe the cargo contents"/>
                                     <field name="special_info" string="Special Info" placeholder="Any special instructions"/>
@@ -160,11 +160,7 @@
                                     <field name="net_amount" string="Net Amount (SAR)" placeholder="0.00"/>
                                     <field name="vat_amount" string="VAT 15%" placeholder="0.00"/>
                                     <field name="extra_charge" string="Extra Charge" placeholder="0.00"/>
-                                    <div class="oe_subtotal_footer oe_right" colspan="2" name="financial_total">
-                                        <field name="gross_total"
-                                               class="oe_subtotal_footer_separator"
-                                               string="GROSS TOTAL (SAR)"/>
-                                    </div>
+                                    <field name="gross_total" string="Gross Total (SAR)"/>
                                 </group>
                             </group>
                         </page>
@@ -181,7 +177,7 @@
                                     <field name="shippo_rate_currency" string="Currency" readonly="1"/>
                                     <field name="shippo_est_delivery" string="Est. Delivery" readonly="1"/>
                                 </group>
-                                <group string="Available Rates" colspan="2" invisible="not shippo_rate_ids">
+                                <group string="Available Rates" colspan="2" invisible="not shippo_rate_ids or shippo_sent">
                                     <field name="shippo_rate_ids" nolabel="1" readonly="shippo_sent" context="{'tree_view_ref': 'cargo_manual_invoicing.view_cargo_shippo_rate_tree'}"/>
                                 </group>
                                 <group string="Tracking">
