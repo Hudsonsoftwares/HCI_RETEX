@@ -5,7 +5,7 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
                 <div class="article o_report_no_header"
-                     style="margin: 0; padding: 8px 15px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; color: #1a1a1a;">
+                     style="margin: 0; padding: 6px 12px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10.5px; color: #1a1a1a;">
                     <t t-call="cargo_manual_invoicing.report_cargo_invoice_content"/>
                 </div>
                 <div style="page-break-after: always;" t-if="not doc_last"/>
@@ -17,12 +17,12 @@
         <style>
             .ci-header {
                 border-bottom: 3px solid #000;
-                padding-bottom: 12px;
+                padding-bottom: 10px;
                 margin-bottom: 0;
             }
             .ci-header .en-block {
-                font-size: 12px;
-                line-height: 1.6;
+                font-size: 12.5px;
+                line-height: 1.5;
                 color: #222;
             }
             .ci-header .en-block .company-name {
@@ -30,63 +30,63 @@
                 font-weight: 800;
                 color: #000;
                 letter-spacing: 0.5px;
-                margin-bottom: 4px;
+                margin-bottom: 3px;
             }
             .ci-header .ar-block {
                 direction: rtl;
                 text-align: right;
-                font-size: 13px;
-                line-height: 1.7;
+                font-size: 13.5px;
+                line-height: 1.5;
                 color: #222;
             }
             .ci-header .ar-block .company-name-ar {
-                font-size: 20px;
+                font-size: 21px;
                 font-weight: 800;
                 color: #000;
-                margin-bottom: 4px;
+                margin-bottom: 3px;
             }
             .ci-header .detail-label {
                 color: #555;
                 font-weight: 700;
-                font-size: 11px;
+                font-size: 11.5px;
             }
 
             /* Meta row */
             .ci-meta {
                 background: #000;
                 color: #fff;
-                margin-top: 15px;
+                margin-top: 12px;
                 border-radius: 4px;
                 overflow: hidden;
             }
             .ci-meta td {
-                padding: 6px 10px !important;
+                padding: 5px 8px !important;
                 border: 1px solid #222 !important;
             }
             .ci-meta .meta-label {
-                font-size: 11px;
+                font-size: 10px;
                 font-weight: 700;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
                 color: #aaa;
-                margin-bottom: 2px;
+                margin-bottom: 1px;
                 display: block;
             }
             .ci-meta .meta-value {
-                font-size: 13px;
+                font-size: 12px;
                 font-weight: 800;
                 color: #fff;
                 display: block;
-                margin-top: 2px;
+                margin-top: 1px;
             }
 
             /* Section headers */
             .ci-section-header {
                 background: #111;
                 border: 1px solid #111;
-                padding: 6px 10px;
+                padding: 5px 9px;
                 font-weight: 700;
-                font-size: 12px;
+                font-size: 11.5px;
                 color: #fff;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
@@ -96,13 +96,13 @@
             .ci-table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-top: 10px;
+                margin-top: 8px;
             }
             .ci-table td {
                 border: 1px solid #ccc;
-                padding: 5px 8px;
+                padding: 4px 7px;
                 vertical-align: middle;
-                font-size: 12.5px;
+                font-size: 11.5px;
             }
             .ci-table .lbl {
                 font-weight: 700;
@@ -110,7 +110,7 @@
                 background: #f9f9f9;
                 width: 13%;
                 white-space: nowrap;
-                font-size: 11px;
+                font-size: 10.5px;
             }
             .ci-table .val {
                 width: 37%;
@@ -122,27 +122,27 @@
             .ci-fin-label {
                 font-weight: 700;
                 color: #222;
-                font-size: 12.5px;
+                font-size: 11.5px;
             }
             .ci-fin-label-ar {
                 font-weight: 600;
                 color: #666;
-                font-size: 11.5px;
+                font-size: 10.5px;
                 direction: rtl;
             }
             .ci-fin-value {
                 text-align: right;
                 font-weight: 800;
-                font-size: 14px;
+                font-size: 13px;
                 color: #000;
                 width: 100px;
             }
             .ci-gross-cell {
                 background: #000 !important;
                 color: #fff !important;
-                font-size: 14px !important;
+                font-size: 13px !important;
                 font-weight: 800 !important;
-                padding: 8px !important;
+                padding: 7px !important;
                 border-color: #000 !important;
             }
             .ci-gross-cell .ci-fin-label {
@@ -161,22 +161,22 @@
                 direction: rtl;
                 text-align: right;
                 font-size: 9.5px;
-                line-height: 1.5;
+                line-height: 1.45;
                 color: #333;
-                margin-top: 18px;
+                margin-top: 15px;
                 border-top: 2px solid #000;
-                padding-top: 12px;
+                padding-top: 10px;
             }
             .ci-terms strong {
                 color: #000;
-                font-size: 10px;
+                font-size: 10.5px;
             }
             .ci-terms-en {
-                font-size: 9px;
-                line-height: 1.4;
+                font-size: 9.5px;
+                line-height: 1.3;
                 color: #444;
-                margin-top: 8px;
-                padding-top: 8px;
+                margin-top: 7px;
+                padding-top: 7px;
                 border-top: 1px solid #ccc;
             }
 
@@ -185,11 +185,11 @@
                 border: 2px solid #000;
                 border-radius: 4px;
                 text-align: center;
-                padding: 20px 10px 8px 10px;
+                padding: 15px 10px 6px 10px;
                 font-weight: 700;
-                font-size: 11.5px;
+                font-size: 11px;
                 color: #222;
-                min-height: 60px;
+                min-height: 55px;
                 background: #fdfdfd;
             }
         </style>
@@ -414,13 +414,15 @@
             </div>
 
             <!-- ═══ QR CODE + SIGNATURES ═══ -->
-            <div class="row" style="margin-top: 10px;">
+            <div class="row" style="margin-top: 5px; page-break-inside: avoid;">
                 <div class="col-4 text-center">
                     <div class="ci-sign-box">Sign or Name</div>
                 </div>
-                <div class="col-4 text-center" style="padding-top: 2px;">
-                    <img t-attf-src="/report/barcode/?barcode_type=QR&amp;value={{ '%s | %s | %s | %.2f SAR' % (doc.invoice_number.replace('/', '-'), doc.shipper_name or '', doc.destination_country_id.name or '', doc.gross_total) }}&amp;width=90&amp;height=90"
-     style="width: 90px; height: 90px;" alt="QR Code"/>
+                <div class="col-4 text-center">
+                    <t t-if="doc.zatca_qr_image">
+                        <img t-att-src="image_data_uri(doc.zatca_qr_image)" style="image-rendering: pixelated; margin-bottom: 2px; max-height: 90px;" alt="ZATCA QR Code"/>
+                        <div style="font-size: 9px; font-weight: bold; margin-top: 2px;">ZATCA Compliant</div>
+                    </t>
                 </div>
                 <div class="col-4 text-center">
                     <div class="ci-sign-box">Thumb Sign</div>

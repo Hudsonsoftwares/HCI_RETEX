@@ -3,6 +3,16 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 import re
 import base64
+import logging
+import io
+
+_logger = logging.getLogger(__name__)
+
+try:
+    import qrcode
+except ImportError:
+    qrcode = None
+    _logger.warning("The 'qrcode' library is not installed. ZATCA QR codes will not be generated.")
 
 
 class CargoShippoRate(models.Model):
@@ -128,6 +138,66 @@ class CargoManualInvoice(models.Model):
         store=True,
         tracking=True,
     )
+
+    # ── ZATCA QR Code ──────────────────────────────────────────────────
+    zatca_qr_image = fields.Binary(
+        string='ZATCA QR Code',
+        compute='_compute_zatca_qr_image',
+    )
+
+    @api.depends('invoice_number', 'shipping_date', 'gross_total', 'vat_amount')
+    def _compute_zatca_qr_image(self):
+        if not qrcode:
+            for rec in self:
+                rec.zatca_qr_image = False
+            return
+
+        for rec in self:
+            if not rec.invoice_number or rec.invoice_number == 'New':
+                rec.zatca_qr_image = False
+                continue
+
+            seller_name = "مؤسسة سطوع الأمل للشحن الجوي"
+            vat_number = "311239685900003"
+            # Format to ISO 8601 (Odoo stores datetime as UTC natively)
+            timestamp = rec.shipping_date.isoformat() + "Z" if rec.shipping_date else ""
+            total = "%.2f" % (rec.gross_total or 0.0)
+            vat = "%.2f" % (rec.vat_amount or 0.0)
+
+            def get_tlv(tag, value):
+                value_bytes = value.encode('utf-8')
+                return bytes([tag, len(value_bytes)]) + value_bytes
+
+            tlv_data = b""
+            tlv_data += get_tlv(1, seller_name)
+            tlv_data += get_tlv(2, vat_number)
+            tlv_data += get_tlv(3, timestamp)
+            tlv_data += get_tlv(4, total)
+            tlv_data += get_tlv(5, vat)
+
+            b64_string = base64.b64encode(tlv_data).decode('utf-8')
+
+            try:
+                qr = qrcode.QRCode(
+                    version=None,
+                    error_correction=qrcode.constants.ERROR_CORRECT_M,
+                    box_size=2,
+                    border=1,
+                )
+                qr.add_data(b64_string)
+                qr.make(fit=True)
+
+                img = qr.make_image(fill_color="black", back_color="white")
+                buffer = io.BytesIO()
+                try:
+                    img.save(buffer, format="PNG")  # type: ignore
+                except TypeError:
+                    # PyPNGImage does not accept 'format' keyword argument
+                    img.save(buffer)
+                rec.zatca_qr_image = base64.b64encode(buffer.getvalue()).decode('utf-8')
+            except Exception as e:
+                _logger.error("Failed to generate ZATCA QR code: %s", str(e))
+                rec.zatca_qr_image = False
 
     @api.depends('net_amount', 'vat_amount', 'extra_charge')
     def _compute_gross_total(self):

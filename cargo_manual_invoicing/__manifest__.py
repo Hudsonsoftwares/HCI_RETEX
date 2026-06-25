@@ -13,6 +13,7 @@
     """,
     'author': 'Brightness of Hope Air Cargo Est',
     'depends': ['base', 'mail'],
+    'external_dependencies': {'python': ['qrcode']},
     'data': [
         'security/ir.model.access.csv',
         'data/sequence_data.xml',

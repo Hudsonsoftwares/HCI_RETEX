@@ -191,6 +191,26 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="ZATCA QR Code" name="zatca_qr">
+                            <group>
+                                <group>
+                                    <field name="zatca_qr_image" widget="image" readonly="1" nolabel="1" options="{'size': [200, 200]}"/>
+                                </group>
+                                <group>
+                                    <div class="alert alert-info" role="alert">
+                                        <h4 class="alert-heading">ZATCA Phase 1 Compliant QR Code</h4>
+                                        <p>This QR code automatically encodes the following required fields in TLV Base64 format:</p>
+                                        <ol>
+                                            <li><strong>Seller Name:</strong> مؤسسة سطوع الأمل للشحن الجوي</li>
+                                            <li><strong>VAT Number:</strong> 311239685900003</li>
+                                            <li><strong>Time Stamp:</strong> Date &amp; Time of Invoice</li>
+                                            <li><strong>Invoice Total:</strong> Gross Total Amount</li>
+                                            <li><strong>VAT Total:</strong> VAT Amount (15%)</li>
+                                        </ol>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
                 <chatter/>
