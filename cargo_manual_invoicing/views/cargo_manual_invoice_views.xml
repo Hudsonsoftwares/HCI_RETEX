@@ -79,8 +79,8 @@
                             <field name="status" string="Status"/>
                             <field name="manual_status" string="Specify Status" invisible="status != 'manual'"/>
                         </group>
-                        <group string="Agent / Payment">
-                            <field name="agent_name" string="Agent"/>
+                        <group string="User / Payment">
+                            <field name="agent_name"/>
                             <field name="paymode" widget="radio"
                                    options="{'horizontal': true}" string="Payment Mode"/>
                         </group>
@@ -101,9 +101,7 @@
                                 </group>
                                 <group string="Receiver Info — معلومات استقبال">
                                     <field name="destination" invisible="1"/>
-                                    <field name="destination_country_id" string="Destination Country" options="{'no_create': True}" placeholder="Select country..."/>
-                                    <field name="receiver_city" string="City" placeholder="e.g. Mumbai"/>
-                                    <field name="receiver_zip" string="ZIP / Postal Code" placeholder="e.g. 400001"/>
+                                    <field name="destination_country_id" string="Country" placeholder="e.g. India" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="receiver_name" string="Receiver Name" placeholder="Full name of receiver"/>
                                     <field name="receiver_mobile" string="Mobile" widget="phone" placeholder="e.g. 97430320008"/>
                                     <field name="receiver_tel" string="Tel" widget="phone" placeholder="Optional landline"/>
@@ -238,7 +236,7 @@
                             context="{'group_by': 'shipping_date:month'}"/>
                     <filter name="group_year" string="Year"
                             context="{'group_by': 'shipping_date:year'}"/>
-                    <filter name="group_agent" string="Agent"
+                    <filter name="group_agent" string="User"
                             context="{'group_by': 'agent_name'}"/>
                 </group>
                 <searchpanel>

@@ -45,7 +45,7 @@ class CargoManualInvoice(models.Model):
         tracking=True,
     )
     agent_name = fields.Char(
-        string='User',
+        string='User Name',
         default=lambda self: self.env.user.name,
         readonly=True,
     )
@@ -73,8 +73,7 @@ class CargoManualInvoice(models.Model):
     # ── Receiver Info ──────────────────────────────────────────────────
     destination = fields.Char(string='Old Destination', required=False, help="Deprecated field")
     destination_country_id = fields.Many2one('res.country', string='Destination Country', required=True)
-    receiver_city = fields.Char(string='City', required=True)
-    receiver_zip = fields.Char(string='ZIP / Postal Code', required=True)
+
     receiver_name = fields.Char(string='Receiver Name', required=True)
     receiver_mobile = fields.Char(string='Mobile', required=True)
     receiver_tel = fields.Char(string='Tel')
@@ -109,9 +108,9 @@ class CargoManualInvoice(models.Model):
                 rec.carrier = dict(self._fields['delivery_partner'].selection).get(rec.delivery_partner, '')
             else:
                 rec.carrier = ''
-    airway_bill = fields.Char(string='Airway Bill', required=True)
-    product_info = fields.Text(string='Product Info', required=True)
-    special_info = fields.Text(string='Special Info', required=True)
+    airway_bill = fields.Char(string='Airway Bill', required=False)
+    product_info = fields.Text(string='Product Info', required=False)
+    special_info = fields.Text(string='Special Info', required=False)
     paymode = fields.Selection(
         [('cash', 'Cash'), ('card', 'Card'), ('company', 'Company')],
         string='Paymode',
@@ -157,8 +156,8 @@ class CargoManualInvoice(models.Model):
                 rec.zatca_qr_image = False
                 continue
 
-            seller_name = "Brightness of Hope Air Cargo Est"
-            vat_number = "311239685900003"
+            seller_name = "Retex Cargo Express"
+            vat_number = "310248611400003"
             # Format to ISO 8601 (Odoo stores datetime as UTC natively)
             timestamp = rec.shipping_date.isoformat() + "Z" if rec.shipping_date else ""
             total = "%.2f" % (rec.gross_total or 0.0)
@@ -442,7 +441,7 @@ class CargoManualInvoice(models.Model):
             f"Your cargo invoice *{self.invoice_number}* has been successfully generated.\n\n"
             f"📦 *Shipment Details*\n"
             f"- From: {self.origin}\n"
-            f"- To: {self.receiver_city}, {self.destination_country_id.name}\n"
+            f"- To: {self.destination_country_id.name}\n"
             f"- Weight: {self.weight} kg\n"
             f"- Pieces: {self.pieces}\n"
         )

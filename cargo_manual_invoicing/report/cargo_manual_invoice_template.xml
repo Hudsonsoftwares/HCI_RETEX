@@ -199,10 +199,9 @@
             <!-- ═══ HEADER ═══ -->
             <div class="row ci-header">
                 <div class="col-5 en-block">
-                    <div class="company-name">BRIGHTNESS OF HOPE AIR CARGO EST</div>
-                    <span class="detail-label">CR NO:</span> 1010791259<br/>
-                    <span class="detail-label">VAT NO:</span> 311239685900003<br/>
-                    <span class="detail-label">MOBILE:</span> 0574436896 / 0573370566<br/>
+                    <div class="company-name">Retex Cargo Express</div>
+                    <span class="detail-label">VAT NO:</span> 310248611400003<br/>
+                    <span class="detail-label">MOBILE:</span> 0558736359<br/>
                     Riyadh-Al Aziziyah-<br/>
                     Abu Saad Al-Wazir Street-Near Saptco Bus Stand<br/>
                     Saudi Arabia Riyadh
@@ -211,12 +210,12 @@
                 <div class="col-2"></div>
 
                 <div class="col-5 ar-block">
-                    <div class="company-name-ar">مؤسسة سطوع الأمل للشحن الجوي</div>
-                    س.ت : ١٠١٠٧٩١٢٥٩<br/>
-                    ركم الضريبي : ٣١١٢٣٩٦٨٥٩٠٠٠٠٣<br/>
-                    جوال : ٠٥٧٣٣٧٠٥٦٦ / ٠٥٧٤٤٣٦٨٩٦<br/>
-                    العزيزية - شارع أبو سعد الوزير - بجوار النقل الجماعي<br/>
-                    الرياض- المملكة العربية السعودية
+                    <div class="company-name-ar">مؤسسة قافلة السرعة للشحن</div>
+                    الرقم الضريبي : ٣١٠٢٤٨٦١١٤٠٠٠٠٣<br/>
+                    جوال : ٠٥٥٨٧٣٦٣٥٩<br/>
+                    الرياض - العزيزية<br/>
+                    شارع أبو سعد الوزير - بجوار موقف سابتكو<br/>
+                    المملكة العربية السعودية - الرياض
                 </div>
             </div>
 
@@ -244,7 +243,7 @@
                         <span class="meta-value"><t t-esc="doc.status"/></span>
                     </td>
                     <td style="width:15%;">
-                        <span class="meta-label">Agent</span>
+                        <span class="meta-label">User</span>
                         <span class="meta-value"><t t-esc="doc.agent_name"/></span>
                     </td>
                 </tr>
@@ -266,7 +265,7 @@
                     <td class="lbl">Origin:</td>
                     <td class="val"><t t-esc="doc.origin"/></td>
                     <td class="lbl">Destination:</td>
-                    <td class="val"><t t-esc="doc.receiver_city"/>, <t t-esc="doc.destination_country_id.name"/></td>
+                    <td class="val"><t t-esc="doc.destination_country_id.name"/></td>
                 </tr>
                 <tr>
                     <td class="lbl">Name:</td>
