@@ -222,29 +222,25 @@
             <!-- ═══ META ROW ═══ -->
             <table class="ci-table ci-meta">
                 <tr>
-                    <td style="width:15%;">
+                    <td style="width:25%;">
                         <span class="meta-label">Invoice No</span>
                         <span class="meta-value"><t t-esc="doc.invoice_number"/></span>
                     </td>
-                    <td style="width:30%;">
+                    <td style="width:25%;">
                         <span class="meta-label">Shipping Date</span>
                         <span class="meta-value">
                             <t t-esc="doc.shipping_date" t-options='{"widget": "datetime", "format": "d/M/yyyy hh:mm a"}'/>
                         </span>
                     </td>
-                    <td style="width:20%;">
+                    <td style="width:25%;">
                         <span class="meta-label">Shipment Type</span>
                         <span class="meta-value" style="text-transform:uppercase;">
                             <t t-esc="dict(doc._fields['shipment_type'].selection).get(doc.shipment_type, '')"/>
                         </span>
                     </td>
-                    <td style="width:20%;">
+                    <td style="width:25%;">
                         <span class="meta-label">Status</span>
                         <span class="meta-value"><t t-esc="doc.status"/></span>
-                    </td>
-                    <td style="width:15%;">
-                        <span class="meta-label">User</span>
-                        <span class="meta-value"><t t-esc="doc.agent_name"/></span>
                     </td>
                 </tr>
             </table>
@@ -363,15 +359,16 @@
                 <tr>
                     <td class="lbl">Product:</td>
                     <td class="val"><t t-esc="doc.product_info"/></td>
-                    <td class="lbl">Paymode:</td>
-                    <td class="val" style="text-transform:capitalize;">
-                        <t t-if="doc.paymode" t-esc="dict(doc._fields['paymode'].selection).get(doc.paymode, '')"/>
-                    </td>
+                    <td class="lbl">User:</td>
+                    <td class="val"><t t-esc="doc.agent_name"/></td>
                 </tr>
                 <tr>
                     <td class="lbl">Special:</td>
                     <td class="val"><t t-esc="doc.special_info"/></td>
-                    <td class="lbl" colspan="2" style="border:none; background:none;"></td>
+                    <td class="lbl">Paymode:</td>
+                    <td class="val" style="text-transform:capitalize;">
+                        <t t-if="doc.paymode" t-esc="dict(doc._fields['paymode'].selection).get(doc.paymode, '')"/>
+                    </td>
                 </tr>
             </table>
 
