@@ -76,7 +76,8 @@
                             <field name="shipping_date" string="Shipping Date"/>
                             <field name="shipment_type" widget="radio"
                                    options="{'horizontal': true}" string="Shipment Type"/>
-                            <field name="status" string="Status" widget="badge" decoration-info="1"/>
+                            <field name="status" string="Status"/>
+                            <field name="manual_status" string="Specify Status" invisible="status != 'manual'"/>
                         </group>
                         <group string="Agent / Payment">
                             <field name="agent_name" string="Agent"/>

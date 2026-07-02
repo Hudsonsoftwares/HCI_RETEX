@@ -86,10 +86,15 @@ class CargoManualInvoice(models.Model):
     weight = fields.Float(string='Weight', required=True)
     pieces = fields.Integer(string='Pieces', required=True, default=1)
     delivery_partner = fields.Selection([
-        ('dhl', 'DHL'),
-        ('fedex', 'FedEx'),
         ('aramex', 'Aramex'),
+        ('fedex', 'FedEx'),
+        ('dhl', 'DHL'),
         ('ups', 'UPS'),
+        ('jt', 'J&T'),
+        ('smsa', 'SMSA'),
+        ('naqel', 'Naqel'),
+        ('by_air', 'By Air'),
+        ('by_road', 'By Road'),
         ('manual', 'Manual (Other)')
     ], string='Delivery Partner', required=True, default='dhl')
     manual_delivery_partner = fields.Char(string='Manual Delivery Partner')
@@ -104,21 +109,29 @@ class CargoManualInvoice(models.Model):
                 rec.carrier = dict(self._fields['delivery_partner'].selection).get(rec.delivery_partner, '')
             else:
                 rec.carrier = ''
-    airway_bill = fields.Char(string='Airway Bill')
+    airway_bill = fields.Char(string='Airway Bill', required=True)
     product_info = fields.Text(string='Product Info', required=True)
-    special_info = fields.Text(string='Special Info')
+    special_info = fields.Text(string='Special Info', required=True)
     paymode = fields.Selection(
         [('cash', 'Cash'), ('card', 'Card'), ('company', 'Company')],
         string='Paymode',
         default='cash',
         required=True,
     )
-    status = fields.Char(string='Status', default='ORDER PLACED', required=True, tracking=True)
+    status = fields.Selection([
+        ('ORDER PLACED', 'Order Placed'),
+        ('SHIPPED', 'Shipped'),
+        ('IN TRANSIT', 'In Transit'),
+        ('DELIVERED', 'Delivered'),
+        ('RETURNED', 'Returned'),
+        ('manual', 'Manual (Other)')
+    ], string='Status', default='ORDER PLACED', required=True, tracking=True)
+    manual_status = fields.Char(string='Manual Status')
 
     # ── Financials ─────────────────────────────────────────────────────
     net_amount = fields.Float(string='Net Amount', required=True)
-    vat_amount = fields.Float(string='VAT 15%')
-    extra_charge = fields.Float(string='Extra Charge')
+    vat_amount = fields.Float(string='VAT 15%', required=True, default=0.0)
+    extra_charge = fields.Float(string='Extra Charge', required=True, default=0.0)
     gross_total = fields.Float(
         string='Gross Total',
         compute='_compute_gross_total',
@@ -423,23 +436,24 @@ class CargoManualInvoice(models.Model):
         if not phone:
             raise ValidationError("Invalid Receiver Mobile number.")
 
-        # Generate base URL for the public PDF link
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        if not self.access_token:
-            self.access_token = str(uuid.uuid4())
-            
-        pdf_link = f"{base_url}/cargo/invoice/pdf/{self.id}/{self.access_token}"
-        
         # Build message
         message = (
             f"Hello {self.receiver_name},\n\n"
-            f"Your cargo invoice {self.invoice_number} has been generated.\n"
-            f"Gross Total: {self.gross_total} SAR\n"
+            f"Your cargo invoice *{self.invoice_number}* has been successfully generated.\n\n"
+            f"📦 *Shipment Details*\n"
+            f"- From: {self.origin}\n"
+            f"- To: {self.receiver_city}, {self.destination_country_id.name}\n"
+            f"- Weight: {self.weight} kg\n"
+            f"- Pieces: {self.pieces}\n"
         )
         if self.airway_bill:
-            message += f"Tracking / Airway Bill: {self.airway_bill}\n"
+            message += f"- Tracking / Airway Bill: {self.airway_bill}\n"
             
-        message += f"\nYou can view and download your PDF invoice here: {pdf_link}"
+        message += (
+            f"\n💰 *Invoice Summary*\n"
+            f"- Gross Total: {self.gross_total} SAR\n\n"
+            f"Please find the attached PDF invoice for your reference."
+        )
         
         encoded_message = urllib.parse.quote(message)
         whatsapp_url = f"https://wa.me/{phone}?text={encoded_message}"
