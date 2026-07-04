@@ -94,7 +94,7 @@
                                     <field name="shipper_name" string="Shipper Name" placeholder="Full name of shipper"/>
                                     <field name="shipper_mobile" string="Mobile" widget="phone" placeholder="e.g. 0599649593"/>
                                     <field name="shipper_tel" string="Tel" widget="phone" placeholder="Optional landline"/>
-                                    <field name="shipper_id_no" string="ID No" placeholder="National ID / Iqama"/>
+                                    <field name="shipper_vat_no" string="VAT No" placeholder="Customer VAT Number"/>
                                     <field name="shipper_company" string="Company" placeholder="Company name"/>
                                     <field name="shipper_email" string="Email" widget="email" placeholder="email@example.com"/>
                                     <field name="shipper_address" string="Address" placeholder="Full address"/>

@@ -1,5 +1,7 @@
 from odoo import http, _
+# pyrefly: ignore [missing-import]
 from odoo.http import request
+# pyrefly: ignore [missing-import]
 from odoo.addons.web.controllers.home import Home
 
 class LicenseHomeController(Home):

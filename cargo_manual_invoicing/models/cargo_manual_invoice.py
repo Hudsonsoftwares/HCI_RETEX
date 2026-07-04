@@ -65,7 +65,7 @@ class CargoManualInvoice(models.Model):
     shipper_name = fields.Char(string='Shipper Name', required=True)
     shipper_mobile = fields.Char(string='Mobile', required=True)
     shipper_tel = fields.Char(string='Tel')
-    shipper_id_no = fields.Char(string='ID No')
+    shipper_vat_no = fields.Char(string='VAT No')
     shipper_company = fields.Char(string='Company')
     shipper_email = fields.Char(string='Email ID')
     shipper_address = fields.Char(string='Address', required=True)

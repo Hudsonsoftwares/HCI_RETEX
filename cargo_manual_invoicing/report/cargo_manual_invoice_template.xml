@@ -282,8 +282,8 @@
                     <td class="val"><t t-esc="doc.receiver_tel"/></td>
                 </tr>
                 <tr>
-                    <td class="lbl">ID No:</td>
-                    <td class="val"><t t-esc="doc.shipper_id_no"/></td>
+                    <td class="lbl">VAT No:</td>
+                    <td class="val"><t t-esc="doc.shipper_vat_no"/></td>
                     <td class="lbl" colspan="2" style="border:none; background:none;"></td>
                 </tr>
                 <tr>

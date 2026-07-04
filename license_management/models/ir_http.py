@@ -9,6 +9,7 @@ class IrHttp(models.AbstractModel):
         
         # Check license before allowing any request
         # If expired and user is not admin → raise AccessDenied
+        # pyrefly: ignore [missing-import]
         from odoo.http import request
         if request and request.env:
             ICP = request.env['ir.config_parameter'].sudo()
