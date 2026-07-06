@@ -5,6 +5,10 @@
         <field name="model">license.management</field>
         <field name="arch" type="xml">
             <form string="License Dashboard" create="false" edit="false">
+                <header>
+                    <button name="action_verify" string="Verify Status" type="object" class="btn-primary"/>
+                    <button name="action_suspend" string="Suspend" type="object" invisible="license_status in ['draft', 'expired', 'suspended', 'invalid']"/>
+                </header>
                 <sheet>
                     <div class="o_dashboard_license_widget" style="padding: 20px; text-align: center;">
                         <h1 style="font-size: 24px; margin-bottom: 20px;">License Overview</h1>

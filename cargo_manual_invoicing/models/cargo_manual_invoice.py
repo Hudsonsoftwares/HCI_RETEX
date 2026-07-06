@@ -306,9 +306,9 @@ class CargoManualInvoice(models.Model):
         body_html = """
         <div style="font-family: Arial, sans-serif; max-width: 620px; margin: 0 auto; border: 1px solid #ddd;">
             <div style="background: #000; color: #fff; padding: 20px; text-align: center;">
-                <h2 style="margin: 0; font-size: 18px;">BRIGHTNESS OF HOPE AIR CARGO EST</h2>
+                <h2 style="margin: 0; font-size: 18px;">RETEX CARGO EXPRESS</h2>
                 <p style="margin: 5px 0 0; font-size: 15px;">مؤسسة سطوع الأمل للشحن الجوي</p>
-                <p style="margin: 8px 0 0; font-size: 11px; color: #aaa;">CR: 1010791259 | VAT: 311239685900003</p>
+                <p style="margin: 8px 0 0; font-size: 11px; color: #aaa;">CR: 1010791259 | VAT: 310248611400003</p>
             </div>
             <div style="background: #f5f5f5; padding: 15px 20px; border-bottom: 1px solid #ddd;">
                 <h3 style="margin: 0; color: #111;">Invoice: %s</h3>
@@ -366,7 +366,7 @@ class CargoManualInvoice(models.Model):
                 </p>
             </div>
             <div style="background: #222; color: #999; padding: 12px 20px; text-align: center; font-size: 10px; line-height: 1.6;">
-                Brightness of Hope Air Cargo Est<br/>
+                Retex Cargo Express<br/>
                 Riyadh-Al Aziziyah, Abu Saad Al-Wazir Street, Saudi Arabia
             </div>
         </div>
@@ -391,7 +391,7 @@ class CargoManualInvoice(models.Model):
 
         # Send to each recipient
         mail_values = {
-            'subject': 'Cargo Invoice %s — Brightness of Hope Air Cargo' % self.invoice_number,
+            'subject': 'Cargo Invoice %s — Retex Cargo Express' % self.invoice_number,
             'body_html': body_html,
             'email_from': self.env.user.email_formatted or self.env.company.email,
             'attachment_ids': [(4, attachment.id)],
