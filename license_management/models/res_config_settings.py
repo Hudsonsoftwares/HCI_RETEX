@@ -16,9 +16,9 @@ class ResConfigSettings(models.TransientModel):
     
     license_admin_uid = fields.Many2one('res.users', string='Admin User', config_parameter='license.admin_uid')
     
-    license_vendor_name = fields.Char(string='Vendor Name', config_parameter='license.vendor_name', default='Your Company')
-    license_vendor_email = fields.Char(string='Vendor Email', config_parameter='license.vendor_email', default='support@yourcompany.com')
-    license_vendor_phone = fields.Char(string='Vendor Phone', config_parameter='license.vendor_phone', default='')
+    license_vendor_name = fields.Char(string='Vendor Name', config_parameter='license.vendor_name', default='Hudson Software Solutions')
+    license_vendor_email = fields.Char(string='Vendor Email', config_parameter='license.vendor_email', default='support@hudsonsoftwares.com')
+    license_vendor_phone = fields.Char(string='Vendor Phone', config_parameter='license.vendor_phone', default='+91 9908223334')
     
     database_uuid = fields.Char(string='Database UUID', config_parameter='database.uuid', readonly=True)
     

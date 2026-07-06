@@ -36,9 +36,9 @@ class LicenseController(http.Controller):
     def license_expired_page(self, **kw):
         ICP = request.env['ir.config_parameter'].sudo()
         
-        vendor_name = ICP.get_param('license.vendor_name', 'Your Company')
-        vendor_email = ICP.get_param('license.vendor_email', 'support@yourcompany.com')
-        vendor_phone = ICP.get_param('license.vendor_phone', '')
+        vendor_name = ICP.get_param('license.vendor_name', 'Hudson Software Solutions')
+        vendor_email = ICP.get_param('license.vendor_email', 'support@hudsonsoftwares.com')
+        vendor_phone = ICP.get_param('license.vendor_phone', '+91 9908223334')
         
         license_key = ICP.get_param('license.key', '')
         # Mask the key
