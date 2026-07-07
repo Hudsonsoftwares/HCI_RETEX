@@ -11,7 +11,7 @@
         - Email invoice to shipper and receiver
         - Independent of Odoo native Accounting/Invoicing
     """,
-    'author': 'Brightness of Hope Air Cargo Est',
+    'author': 'Hudson Software Solutions Pvt Ltd',
     'depends': ['base', 'mail'],
     'external_dependencies': {'python': ['qrcode']},
     'data': [
