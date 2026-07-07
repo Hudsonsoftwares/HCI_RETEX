@@ -23,7 +23,8 @@
             .ci-header .en-block {
                 font-size: 12.5px;
                 line-height: 1.5;
-                color: #222;
+                color: #000;
+                font-weight: 600;
             }
             .ci-header .en-block .company-name {
                 font-size: 18px;
@@ -31,13 +32,15 @@
                 color: #000;
                 letter-spacing: 0.5px;
                 margin-bottom: 3px;
+                text-transform: uppercase;
             }
             .ci-header .ar-block {
                 direction: rtl;
                 text-align: right;
                 font-size: 13.5px;
                 line-height: 1.5;
-                color: #222;
+                color: #000;
+                font-weight: 600;
             }
             .ci-header .ar-block .company-name-ar {
                 font-size: 21px;
@@ -46,8 +49,8 @@
                 margin-bottom: 3px;
             }
             .ci-header .detail-label {
-                color: #555;
-                font-weight: 700;
+                color: #000;
+                font-weight: 800;
                 font-size: 11.5px;
             }
 
@@ -100,7 +103,7 @@
             }
             .ci-table td {
                 border: 1px solid #ccc;
-                padding: 4px 7px;
+                padding: 6px 7px;
                 vertical-align: middle;
                 font-size: 11.5px;
             }
@@ -116,6 +119,8 @@
                 width: 37%;
                 color: #000;
                 font-weight: 600;
+                white-space: normal;
+                word-wrap: break-word;
             }
 
             /* Financial section */
@@ -417,7 +422,6 @@
                 <div class="col-4 text-center">
                     <t t-if="doc.zatca_qr_image">
                         <img t-att-src="image_data_uri(doc.zatca_qr_image)" style="image-rendering: pixelated; margin-bottom: 2px; max-height: 90px;" alt="ZATCA QR Code"/>
-                        <div style="font-size: 9px; font-weight: bold; margin-top: 2px;">ZATCA Compliant</div>
                     </t>
                 </div>
                 <div class="col-4 text-center">
