@@ -128,13 +128,13 @@ class CargoManualInvoice(models.Model):
     manual_status = fields.Char(string='Manual Status')
 
     # ── Financials ─────────────────────────────────────────────────────
-    net_amount = fields.Float(string='Net Amount', required=True)
+    net_amount = fields.Float(string='Net Amount', required=True, default=0.0)
     vat_amount = fields.Float(string='VAT 15%', required=True, default=0.0)
     extra_charge = fields.Float(string='Extra Charge', required=True, default=0.0)
     gross_total = fields.Float(
         string='Gross Total',
-        compute='_compute_gross_total',
-        store=True,
+        required=True,
+        default=0.0,
         tracking=True,
     )
 
@@ -198,16 +198,15 @@ class CargoManualInvoice(models.Model):
                 _logger.error("Failed to generate ZATCA QR code: %s", str(e))
                 rec.zatca_qr_image = False
 
-    @api.depends('net_amount', 'vat_amount', 'extra_charge')
-    def _compute_gross_total(self):
-        for rec in self:
-            rec.gross_total = rec.net_amount + rec.vat_amount + rec.extra_charge
-
-    @api.onchange('shipment_type', 'net_amount')
-    def _onchange_compute_vat(self):
+    @api.onchange('gross_total', 'extra_charge', 'shipment_type')
+    def _onchange_gross_total(self):
+        base_total = self.gross_total - self.extra_charge
         if self.shipment_type == 'domestic':
-            self.vat_amount = round(self.net_amount * 0.15, 2)
+            # gross_total - extra_charge = net_amount * 1.15
+            self.net_amount = round(base_total / 1.15, 2)
+            self.vat_amount = base_total - self.net_amount
         else:
+            self.net_amount = base_total
             self.vat_amount = 0.0
 
     @api.constrains('shipper_mobile')

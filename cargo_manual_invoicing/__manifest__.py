@@ -1,5 +1,5 @@
 {
-    'name': 'Cargo Manual Invoicing & PDF Generator',
+    'name': 'HCI',
     'version': '18.0.3.0.0',
     'category': 'Operations',
     'summary': 'Manual cargo invoice entry with dual-language PDF receipts',
