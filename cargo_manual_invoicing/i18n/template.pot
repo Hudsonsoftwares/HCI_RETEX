@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0-20260622\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-10 06:50+0000\n"
-"PO-Revision-Date: 2026-07-10 06:50+0000\n"
+"POT-Creation-Date: 2026-07-13 03:30+0000\n"
+"PO-Revision-Date: 2026-07-13 03:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -73,9 +73,10 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_cargo_invoice_content
 msgid ""
 "<span class=\"detail-label\">VAT NO:</span> 310248611400003<br/>\n"
-"                    <span class=\"detail-label\">PHONE NO:</span> 0570756687<br/>\n"
-"                    Al Aziziya - Abu Saad Al Wazir Street<br/>\n"
-"                    Near Saptco Bus Station"
+"                    <span class=\"detail-label\">MOBILE:</span> 0558736359<br/>\n"
+"                    Riyadh-Al Aziziyah-<br/>\n"
+"                    Abu Saad Al-Wazir Street-Near Saptco Bus Stand<br/>\n"
+"                    Saudi Arabia Riyadh"
 msgstr ""
 
 #. module: cargo_manual_invoicing
@@ -245,12 +246,6 @@ msgid "Auto-generated on save"
 msgstr ""
 
 #. module: cargo_manual_invoicing
-#: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_cargo_invoice_content
-#: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_daily_collection_document
-msgid "Retex Cargo Express"
-msgstr ""
-
-#. module: cargo_manual_invoicing
 #: model:ir.model.fields.selection,name:cargo_manual_invoicing.selection__cargo_manual_invoice__delivery_partner__by_air
 msgid "By Air"
 msgstr ""
@@ -263,6 +258,11 @@ msgstr ""
 #. module: cargo_manual_invoicing
 #: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_daily_collection_document
 msgid "By Shipment Type"
+msgstr ""
+
+#. module: cargo_manual_invoicing
+#: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_daily_collection_document
+msgid "CR: 7026399282 &amp;nbsp;|&amp;nbsp; VAT: 310248611400003"
 msgstr ""
 
 #. module: cargo_manual_invoicing
@@ -1000,6 +1000,12 @@ msgid "Responsible User"
 msgstr ""
 
 #. module: cargo_manual_invoicing
+#: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_cargo_invoice_content
+#: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_daily_collection_document
+msgid "Retex Cargo Express"
+msgstr ""
+
+#. module: cargo_manual_invoicing
 #: model:ir.model.fields.selection,name:cargo_manual_invoicing.selection__cargo_manual_invoice__status__returned
 msgid "Returned"
 msgstr ""
@@ -1285,11 +1291,6 @@ msgid "VAT No:"
 msgstr ""
 
 #. module: cargo_manual_invoicing
-#: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_daily_collection_document
-msgid "VAT: 310248611400003"
-msgstr ""
-
-#. module: cargo_manual_invoicing
 #: model:ir.model.fields,field_description:cargo_manual_invoicing.field_cargo_manual_invoice__weight
 msgid "Weight"
 msgstr ""
@@ -1364,6 +1365,16 @@ msgstr ""
 #. module: cargo_manual_invoicing
 #: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_cargo_invoice_content
 msgid ""
+"الرقم الضريبي : ٣١٠٢٤٨٦١١٤٠٠٠٠٣<br/>\n"
+"                    جوال : ٠٥٥٨٧٣٦٣٥٩<br/>\n"
+"                    الرياض - العزيزية<br/>\n"
+"                    شارع أبو سعد الوزير - بجوار موقف سابتكو<br/>\n"
+"                    المملكة العربية السعودية - الرياض"
+msgstr ""
+
+#. module: cargo_manual_invoicing
+#: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_cargo_invoice_content
+msgid ""
 "تحتاج أي اوراق أو مستندات للتخليس الجمركي على المستلم توفيرها كل الرسوم و الضرائب يجب أن تدفع من قبل المرسل أو المستلم دون أدني مسؤلية على الشركة وفي حالة\n"
 "                عدم استلام الشحنة من قبل المستلم خلال ١٠ أيام داخليا و ٣٠ يوما خارجيا يجب تبليغ المكتب بذلك وفي حالة عدم للتبليغ المكتب غير مسؤل عن هذه الشحنات<br/>\n"
 "                <span style=\"direction: ltr; text-align: left; display: block; margin-top: 2px;\">\n"
@@ -1374,17 +1385,8 @@ msgstr ""
 
 #. module: cargo_manual_invoicing
 #: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_cargo_invoice_content
-msgid ""
-"رقم الضريبي : ٣١٠٢٤٨٦١١٤٠٠٠٠٣<br/>\n"
-"                    هاتف : ٠٥٧٠٧٥٦٦٨٧<br/>\n"
-"                    العزيزية - شارع أبو سعد الوزير - بجوار النقل الجماعي<br/>\n"
-"                    الرياض- المملكة العربية السعودية"
-msgstr ""
-
-#. module: cargo_manual_invoicing
-#: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_cargo_invoice_content
 #: model_terms:ir.ui.view,arch_db:cargo_manual_invoicing.report_daily_collection_document
-msgid "مؤسسة بركات السرعه للتجارة"
+msgid "مؤسسة قافلة السرعة للشحن"
 msgstr ""
 
 #. module: cargo_manual_invoicing

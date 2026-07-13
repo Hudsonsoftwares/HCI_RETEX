@@ -49,7 +49,13 @@ translations = {
     'Cargo Invoice': 'فاتورة الشحن',
     'Print Invoice': 'طباعة الفاتورة',
     'Send Email': 'إرسال بريد',
-    'Send via WhatsApp': 'إرسال عبر واتس اب'
+    'Send via WhatsApp': 'إرسال عبر واتس اب',
+    'Invoice #': 'رقم الفاتورة',
+    'Destination Country': 'دولة الوجهة',
+    'Carrier': 'الناقل',
+    'Paymode': 'طريقة الدفع',
+    'Emailed': 'تم الإرسال',
+    'Gross Total': 'الإجمالي'
 }
 
 with open(r'd:\odoo-custom-addons\cargo_manual_invoicing\i18n\template.pot', 'r', encoding='utf-8') as f:
