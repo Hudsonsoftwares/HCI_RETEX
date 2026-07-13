@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_simple_accounting_transaction_tree" model="ir.ui.view">
+        <field name="name">simple.accounting.transaction.tree</field>
+        <field name="model">simple.accounting.transaction</field>
+        <field name="arch" type="xml">
+            <list string="Transactions" 
+                  decoration-success="type == 'income'" 
+                  decoration-danger="type == 'expense'"
+                  sample="1">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="category_id"/>
+                <field name="type"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="amount" widget="monetary" sum="Total Volume"/>
+                <field name="net_impact" widget="monetary" sum="Net Profit / Loss" 
+                       decoration-bf="1"
+                       decoration-success="net_impact &gt;= 0" 
+                       decoration-danger="net_impact &lt; 0"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_simple_accounting_transaction_form" model="ir.ui.view">
+        <field name="name">simple.accounting.transaction.form</field>
+        <field name="model">simple.accounting.transaction</field>
+        <field name="arch" type="xml">
+            <form string="Transaction">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. Office Rent"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="category_id"/>
+                            <field name="type" widget="radio"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_cost" invisible="type != 'income'"/>
+                            <field name="selling_price" invisible="type != 'income'"/>
+                            <field name="amount" readonly="type == 'income'" force_save="1" widget="monetary"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="view_simple_accounting_transaction_pivot" model="ir.ui.view">
+        <field name="name">simple.accounting.transaction.pivot</field>
+        <field name="model">simple.accounting.transaction</field>
+        <field name="arch" type="xml">
+            <pivot string="Financial Analysis" sample="1">
+                <field name="date" type="row"/>
+                <field name="category_id" type="row"/>
+                <field name="type" type="col"/>
+                <field name="amount" type="measure"/>
+                <field name="net_impact" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+    <record id="view_simple_accounting_transaction_graph" model="ir.ui.view">
+        <field name="name">simple.accounting.transaction.graph</field>
+        <field name="model">simple.accounting.transaction</field>
+        <field name="arch" type="xml">
+            <graph string="Income vs Expense" type="bar" sample="1">
+                <field name="date" type="row"/>
+                <field name="type" type="col"/>
+                <field name="amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_simple_accounting_transaction_search" model="ir.ui.view">
+        <field name="name">simple.accounting.transaction.search</field>
+        <field name="model">simple.accounting.transaction</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="category_id"/>
+                <filter string="Income" name="income" domain="[('type', '=', 'income')]"/>
+                <filter string="Expenses" name="expense" domain="[('type', '=', 'expense')]"/>
+                <separator/>
+                <filter string="This Month" name="this_month" domain="[('date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Category" name="group_category" context="{'group_by': 'category_id'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date:month'}"/>
+                    <filter string="Type" name="group_type" context="{'group_by': 'type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_simple_accounting_transaction" model="ir.actions.act_window">
+        <field name="name">Transactions</field>
+        <field name="res_model">simple.accounting.transaction</field>
+        <field name="view_mode">list,pivot,graph,form</field>
+        <field name="context">{'search_default_this_month': 1}</field>
+    </record>
+
+    <menuitem id="menu_simple_accounting_transaction_action"
+              name="All Transactions"
+              parent="menu_simple_accounting_transactions"
+              action="action_simple_accounting_transaction"
+              sequence="10"/>
+              
+    <menuitem id="menu_simple_accounting_analysis_action"
+              name="Profit &amp; Loss Analysis"
+              parent="menu_simple_accounting_reporting"
+              action="action_simple_accounting_transaction"
+              sequence="10"/>
+
+    <!-- Data Migration Trigger -->
+    <data noupdate="0">
+        <function model="simple.accounting.transaction" name="_migrate_income_amounts"/>
+    </data>
+</odoo>

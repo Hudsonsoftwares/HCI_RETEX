@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_simple_accounting_report_wizard_form" model="ir.ui.view">
+        <field name="name">simple.accounting.report.wizard.form</field>
+        <field name="model">simple.accounting.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Ledger Report">
+                <group>
+                    <field name="report_type" widget="radio"/>
+                </group>
+                <group>
+                    <group>
+                        <field name="start_date"/>
+                    </group>
+                    <group>
+                        <field name="end_date"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Print Ledger PDF" name="action_print_report" type="object" class="btn-primary" icon="fa-print"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_simple_accounting_report_wizard" model="ir.actions.act_window">
+        <field name="name">Ledger Report</field>
+        <field name="res_model">simple.accounting.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_simple_accounting_report_wizard"
+              name="Ledger Report"
+              parent="menu_simple_accounting_reporting"
+              action="action_simple_accounting_report_wizard"
+              sequence="20"/>
+</odoo>

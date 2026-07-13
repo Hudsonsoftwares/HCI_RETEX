@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top level menu -->
+    <menuitem id="menu_simple_accounting_root"
+              name="Accounting"
+              web_icon="simple_accounting,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- Sub-menus -->
+    <menuitem id="menu_simple_accounting_transactions"
+              name="Transactions"
+              parent="menu_simple_accounting_root"
+              sequence="10"/>
+
+    <menuitem id="menu_simple_accounting_configuration"
+              name="Configuration"
+              parent="menu_simple_accounting_root"
+              sequence="100"/>
+              
+    <menuitem id="menu_simple_accounting_reporting"
+              name="Reporting"
+              parent="menu_simple_accounting_root"
+              sequence="50"/>
+</odoo>
