@@ -6,16 +6,19 @@
         <field name="model">simple.accounting.transaction</field>
         <field name="arch" type="xml">
             <list string="Transactions" 
-                  decoration-success="type == 'income'" 
-                  decoration-danger="type == 'expense'"
+                  decoration-success="net_impact &gt;= 0"
+                  decoration-danger="net_impact &lt; 0"
                   sample="1">
                 <field name="date"/>
-                <field name="name"/>
-                <field name="user_id"/>
+                <field name="name" decoration-bf="1"/>
+                <field name="cargo_invoice_id" optional="show"/>
+                <field name="shipper_name" optional="show"/>
+                <field name="mobile" optional="show"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
                 <field name="category_id"/>
-                <field name="type"/>
+                <field name="type" widget="badge" decoration-success="type == 'income'" decoration-danger="type == 'expense'"/>
                 <field name="currency_id" column_invisible="True"/>
-                <field name="amount" widget="monetary" sum="Total Volume"/>
+                <field name="amount" widget="monetary" sum="Total Volume" decoration-bf="1"/>
                 <field name="net_impact" widget="monetary" sum="Net Profit / Loss" 
                        decoration-bf="1"
                        decoration-success="net_impact &gt;= 0" 
@@ -31,23 +34,49 @@
         <field name="arch" type="xml">
             <form string="Transaction">
                 <sheet>
+                    <widget name="web_ribbon" title="INCOME" bg_color="text-bg-success" invisible="type != 'income'"/>
+                    <widget name="web_ribbon" title="EXPENSE" bg_color="text-bg-danger" invisible="type != 'expense'"/>
+                    
                     <div class="oe_title">
-                        <h1><field name="name" placeholder="e.g. Office Rent"/></h1>
+                        <label for="name" string="Transaction Description"/>
+                        <h1><field name="name" placeholder="e.g. Invoice #1234 or Office Rent"/></h1>
                     </div>
+                    
                     <group>
-                        <group>
+                        <group string="General Info">
+                            <field name="type" widget="radio" options="{'horizontal': true}"/>
                             <field name="category_id"/>
-                            <field name="type" widget="radio"/>
-                            <field name="user_id"/>
-                        </group>
-                        <group>
                             <field name="date"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                        </group>
+                        <group string="Financials">
                             <field name="currency_id" invisible="1"/>
-                            <field name="company_cost" invisible="type != 'income'"/>
-                            <field name="selling_price" invisible="type != 'income'"/>
-                            <field name="amount" readonly="type == 'income'" force_save="1" widget="monetary"/>
+                            <field name="company_cost" invisible="type != 'income'" widget="monetary"/>
+                            <field name="selling_price" invisible="type != 'income'" widget="monetary"/>
+                            <hr invisible="type != 'income'"/>
+                            <field name="amount" readonly="type == 'income'" force_save="1" widget="monetary" style="font-weight: bold; font-size: 1.1em; color: #1e293b;"/>
+                            <field name="net_impact" widget="monetary" style="font-weight: bold; font-size: 1.2em;" decoration-success="net_impact &gt;= 0" decoration-danger="net_impact &lt; 0"/>
                         </group>
                     </group>
+                    
+                    <notebook>
+                        <page string="Cargo Documentation" invisible="type != 'income'">
+                            <group>
+                                <group>
+                                    <field name="cargo_invoice_id" options="{'no_create': True}" style="font-weight: bold;"/>
+                                    <field name="shipper_name"/>
+                                    <field name="mobile"/>
+                                </group>
+                                <group>
+                                    <field name="weight"/>
+                                    <field name="destination"/>
+                                    <field name="service"/>
+                                    <field name="tracking_no"/>
+                                    <field name="cargo_gross_total" widget="monetary" decoration-bf="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -95,7 +124,8 @@
                 <filter string="This Month" name="this_month" domain="[('date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
                 <group expand="0" string="Group By">
                     <filter string="Category" name="group_category" context="{'group_by': 'category_id'}"/>
-                    <filter string="Date" name="group_date" context="{'group_by': 'date:month'}"/>
+                    <filter string="Date (Month)" name="group_date" context="{'group_by': 'date:month'}"/>
+                    <filter string="Date (Day)" name="group_date_day" context="{'group_by': 'date:day'}"/>
                     <filter string="Type" name="group_type" context="{'group_by': 'type'}"/>
                 </group>
             </search>
@@ -106,7 +136,7 @@
         <field name="name">Transactions</field>
         <field name="res_model">simple.accounting.transaction</field>
         <field name="view_mode">list,pivot,graph,form</field>
-        <field name="context">{'search_default_this_month': 1}</field>
+        <field name="context">{'search_default_this_month': 1, 'search_default_group_date_day': 1}</field>
     </record>
 
     <menuitem id="menu_simple_accounting_transaction_action"

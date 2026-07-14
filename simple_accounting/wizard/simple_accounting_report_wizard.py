@@ -49,7 +49,7 @@ class SimpleAccountingReportWizard(models.TransientModel):
         data = {
             'start_date': self.start_date,
             'end_date': self.end_date,
-            'transactions': transactions.read(['date', 'name', 'user_id', 'category_id', 'type', 'amount', 'company_cost', 'net_impact']),
+            'transactions': transactions.read(['date', 'name', 'cargo_invoice_id', 'user_id', 'category_id', 'type', 'amount', 'company_cost', 'net_impact']),
             'total_income': total_income,
             'total_expense': total_expense,
             'net_profit': net_profit,

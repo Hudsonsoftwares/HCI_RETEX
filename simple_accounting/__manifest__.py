@@ -12,7 +12,7 @@
         * Generate custom PDF Ledgers by date range
     """,
     'author': 'Hudson Software Solutions Pvt ltd',
-    'depends': ['base', 'web'],
+    'depends': ['base', 'web', 'cargo_manual_invoicing'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
