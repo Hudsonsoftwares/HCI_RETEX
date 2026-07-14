@@ -9,13 +9,13 @@
                   decoration-success="net_impact &gt;= 0"
                   decoration-danger="net_impact &lt; 0"
                   sample="1">
-                <field name="date"/>
+                <field name="date" optional="show"/>
+                <field name="cargo_invoice_id" decoration-bf="1" optional="show"/>
                 <field name="name" decoration-bf="1"/>
-                <field name="cargo_invoice_id" optional="show"/>
-                <field name="shipper_name" optional="show"/>
-                <field name="mobile" optional="show"/>
-                <field name="user_id" widget="many2one_avatar_user"/>
-                <field name="category_id"/>
+                <field name="category_id" widget="badge"/>
+                <field name="shipper_name" optional="hide"/>
+                <field name="mobile" optional="hide"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="hide"/>
                 <field name="type" widget="badge" decoration-success="type == 'income'" decoration-danger="type == 'expense'"/>
                 <field name="currency_id" column_invisible="True"/>
                 <field name="amount" widget="monetary" sum="Total Volume" decoration-bf="1"/>

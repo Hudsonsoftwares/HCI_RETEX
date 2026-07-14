@@ -1,5 +1,5 @@
 {
-    'name': 'Simple Accounting',
+    'name': 'Hudson Accounting',
     'version': '18.0.1.0.0',
     'category': 'Accounting',
     'summary': 'A lightweight accounting module to track daily income, expenses, and P&L.',
@@ -22,6 +22,7 @@
         'report/simple_accounting_reports.xml',
         'report/simple_accounting_report_template.xml',
         'wizard/simple_accounting_report_wizard_views.xml',
+        'data/cron_data.xml',
     ],
     'installable': True,
     'application': True,
