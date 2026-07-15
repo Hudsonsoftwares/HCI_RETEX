@@ -17,6 +17,7 @@
                 <field name="mobile" optional="hide"/>
                 <field name="user_id" widget="many2one_avatar_user" optional="hide"/>
                 <field name="type" widget="badge" decoration-success="type == 'income'" decoration-danger="type == 'expense'"/>
+                <field name="payment_method" widget="badge" decoration-info="payment_method == 'bank'" decoration-warning="payment_method == 'cash'" decoration-danger="payment_method == 'cod'"/>
                 <field name="currency_id" column_invisible="True"/>
                 <field name="amount" widget="monetary" sum="Total Volume" decoration-bf="1"/>
                 <field name="net_impact" widget="monetary" sum="Net Profit / Loss" 
@@ -45,6 +46,7 @@
                     <group>
                         <group string="General Info">
                             <field name="type" widget="radio" options="{'horizontal': true}"/>
+                            <field name="payment_method" widget="radio" options="{'horizontal': true}"/>
                             <field name="category_id"/>
                             <field name="date"/>
                             <field name="user_id" widget="many2one_avatar_user"/>

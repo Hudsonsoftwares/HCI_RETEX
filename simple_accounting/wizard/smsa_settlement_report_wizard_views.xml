@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_smsa_settlement_report_wizard_form" model="ir.ui.view">
+        <field name="name">smsa.settlement.report.wizard.form</field>
+        <field name="model">smsa.settlement.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="SMSA Settlement Report">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_print_report" string="Print Report" type="object" class="btn-primary" icon="fa-print"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_smsa_settlement_report_wizard" model="ir.actions.act_window">
+        <field name="name">SMSA Settlement Report</field>
+        <field name="res_model">smsa.settlement.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_smsa_settlement_report_wizard"
+              name="SMSA Settlement Report"
+              parent="simple_accounting.menu_simple_accounting_reporting"
+              action="action_smsa_settlement_report_wizard"
+              sequence="30"/>
+</odoo>

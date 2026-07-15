@@ -2,143 +2,143 @@
 <odoo>
     <template id="report_simple_accounting_ledger">
         <t t-call="web.html_container">
-            <div class="article o_report_no_header" style="margin: 0; padding: 30px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #1a1a1a;">
-                <style>
-                    .dcr-header { background: #000; color: #fff; border-radius: 8px; margin-bottom: 20px; padding: 15px 20px; }
-                    .dcr-header-table { width: 100%; color: #fff; margin-bottom: 15px; }
-                    .dcr-header-table td { vertical-align: middle; }
-                    .dcr-header-meta { text-align: center; font-size: 11px; color: #ccc; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 8px 0; margin-bottom: 15px; }
-                    .dcr-header-report-name { text-align: center; }
-                    .dcr-header-report-name h3 { margin: 0 0 5px 0; font-size: 16px; letter-spacing: 1px; font-weight: bold; }
-                    .dcr-header-report-name p { margin: 0; font-size: 11px; color: #ddd; }
-                    .dcr-section-title { background: #f1f5f9; border-left: 4px solid #000; color: #0f172a; padding: 10px 15px; font-weight: 800; font-size: 14px; margin-top: 30px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
-                    .dcr-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 12px; }
-                    .dcr-table th { background: #f8f9fa; border-bottom: 2px solid #000; border-top: 1px solid #dee2e6; padding: 10px 12px; font-weight: bold; color: #1e293b; text-align: left; text-transform: uppercase; }
-                    .dcr-table td { border-bottom: 1px solid #e2e8f0; padding: 10px 12px; color: #334155; }
-                    .dcr-table tr:nth-child(even) td { background: #f8fafc; }
-                    .dcr-table .number { text-align: right; font-family: monospace; font-size: 12px; }
-                    .dcr-total-row th, .dcr-total-row td { background: #0f172a !important; color: #fff !important; font-weight: bold; font-size: 13px; border-top: 2px solid #000; }
-                    .dcr-footer { margin-top: 40px; padding-top: 15px; border-top: 2px solid #000; font-size: 9px; color: #64748b; text-align: center; }
-                    .text-income { color: #16a34a; font-weight: bold; }
-                    .text-expense { color: #dc2626; font-weight: bold; }
-                </style>
-
-                <!-- Header -->
-                <div class="dcr-header">
-                    <table class="dcr-header-table">
+            <div class="article o_report_no_header" style="margin: 0; padding: 20px; font-family: 'Arial', sans-serif;">
+                
+                <t t-foreach="days_data" t-as="day">
+                    <!-- Day Header -->
+                    <div style="background-color: #a5d6a7; border: 1px solid #000; text-align: center; padding: 5px; font-weight: bold; font-size: 16px; margin-top: 15px;">
+                        <t t-esc="day['date_str']"/>
+                    </div>
+                    
+                    <!-- Transactions Table -->
+                    <table style="width: 100%; border-collapse: collapse; font-size: 10px; border: 1px solid #000; text-align: center; margin-bottom: 10px;">
+                        <thead>
+                            <tr style="background-color: #385a3a; color: #fff;">
+                                <th style="border: 1px solid #000; padding: 3px;">DATE</th>
+                                <th style="border: 1px solid #000; padding: 3px;">NO</th>
+                                <th style="border: 1px solid #000; padding: 3px;">INV NO</th>
+                                <th style="border: 1px solid #000; padding: 3px;">SHIPPER NAME</th>
+                                <th style="border: 1px solid #000; padding: 3px;">MOBILE</th>
+                                <th style="border: 1px solid #000; padding: 3px;">WEIGHT</th>
+                                <th style="border: 1px solid #000; padding: 3px;">DESTINATION</th>
+                                <th style="border: 1px solid #000; padding: 3px;">SERVICE</th>
+                                <th style="border: 1px solid #000; padding: 3px;">TRK NO</th>
+                                <th style="border: 1px solid #000; padding: 3px;">AMOUNT</th>
+                                <th style="border: 1px solid #000; padding: 3px;">COST</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="day['transactions']" t-as="tx">
+                                <tr>
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['date']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"></td> <!-- NO field not explicitly mapped -->
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['cargo_invoice_id']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['shipper_name']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['mobile']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['weight']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['destination']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px; background-color: #fff2cc;"><t t-esc="tx['service']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['tracking_no']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['amount']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['company_cost']"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Summary Blocks -->
+                    <table style="width: 100%; border-collapse: collapse; font-size: 10px; font-weight: bold; text-align: center; margin-bottom: 30px; page-break-inside: avoid;">
                         <tr>
-                            <td style="text-align: left; width: 45%;">
-                                <h2 style="margin: 0; font-size: 16px; font-weight: 800;">Retex Cargo Express</h2>
+                            <!-- LEFT COLUMN -->
+                            <td style="width: 20%; vertical-align: top; padding-right: 5px;">
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-bottom: 10px;">
+                                    <tr style="background-color: #a5d6a7;"><th colspan="2" style="border: 1px solid #000; padding: 2px;">BANK</th></tr>
+                                    <tr><td style="border: 1px solid #000; background-color: #fce4d6; padding: 2px; color: #d35400;">REMIN BALANCE</td><td style="border: 1px solid #000;"><t t-esc="day['bank_opening_balance']"/></td></tr>
+                                    <tr><td style="border: 1px solid #000; background-color: #fff2cc; padding: 2px; color: #d35400;">TODAY BANK</td><td style="border: 1px solid #000;"><t t-esc="day['today_bank']"/></td></tr>
+                                    <tr style="background-color: #a5d6a7;"><td style="border: 1px solid #000; padding: 2px; color: #2e7d32;">TOTAL</td><td style="border: 1px solid #000; color: #2e7d32;"><t t-esc="day['bank_closing_balance']"/></td></tr>
+                                </table>
+                                
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                                    <tr style="background-color: #a5d6a7;"><th colspan="2" style="border: 1px solid #000; padding: 2px;">TOTAL SALE</th></tr>
+                                    <tr><td style="border: 1px solid #000; background-color: #fce4d6; padding: 2px; color: #d35400;">REMIN SALE</td><td style="border: 1px solid #000;"><t t-esc="day['remin_sale']"/></td></tr>
+                                    <tr><td style="border: 1px solid #000; background-color: #fff2cc; padding: 2px; color: #d35400;">TODAY SALE</td><td style="border: 1px solid #000;"><t t-esc="day['today_sale']"/></td></tr>
+                                    <tr style="background-color: #a5d6a7;"><td style="border: 1px solid #000; padding: 2px; color: #2e7d32;">TOTAL</td><td style="border: 1px solid #000; color: #2e7d32;"><t t-esc="day['total_sale']"/></td></tr>
+                                </table>
                             </td>
-                            <td style="text-align: center; width: 10%;">
-                                <span style="font-size: 24px;">✈</span>
+                            
+                            <!-- CENTER COLUMN -->
+                            <td style="width: 50%; vertical-align: top; padding-right: 5px; padding-left: 5px;">
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-bottom: 10px;">
+                                    <tr style="background-color: #a5d6a7;"><th colspan="2" style="border: 1px solid #000; padding: 2px;">TOTAL SHIPMENTS</th></tr>
+                                    <tr><td style="border: 1px solid #000; padding: 2px; width: 50%;">OPENING BALANCE</td><td style="border: 1px solid #000; width: 50%;"><t t-esc="day['cash_opening_balance']"/></td></tr>
+                                    <tr><td style="border: 1px solid #000; padding: 2px;">TODAY BALANCE</td><td style="border: 1px solid #000;"><t t-esc="day['today_cash_balance']"/></td></tr>
+                                    <tr style="background-color: #a5d6a7;"><td style="border: 1px solid #000; padding: 2px; color: #2e7d32;">TOTAL</td><td style="border: 1px solid #000; color: #2e7d32;"><t t-esc="day['cash_closing_balance']"/></td></tr>
+                                </table>
+                                
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-bottom: 10px;">
+                                    <tr style="background-color: #a5d6a7;"><th colspan="2" style="border: 1px solid #000; padding: 2px;">PAYMENTS</th></tr>
+                                    <tr><td style="border: 1px solid #000; padding: 10px; width: 50%;"></td><td style="border: 1px solid #000; width: 50%;"></td></tr>
+                                    <tr><td style="border: 1px solid #000; padding: 10px;"></td><td style="border: 1px solid #000;"></td></tr>
+                                    <tr><td style="border: 1px solid #000; padding: 10px;"></td><td style="border: 1px solid #000;"></td></tr>
+                                </table>
+                                
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                                    <tr style="background-color: #a5d6a7;"><td style="border: 1px solid #000; padding: 2px; width: 50%; color: #2e7d32;">BALANCE</td><td style="border: 1px solid #000; width: 50%; color: #2e7d32;"><t t-esc="day['cash_closing_balance']"/></td></tr>
+                                </table>
                             </td>
-                            <td style="text-align: right; width: 45%; direction: rtl;">
-                                <h2 style="margin: 0; font-size: 20px; font-weight: bold;">مؤسسة قافلة السرعة للشحن</h2>
+                            
+                            <!-- RIGHT COLUMN -->
+                            <td style="width: 30%; vertical-align: top; padding-left: 5px;">
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                                    <tr style="background-color: #a5d6a7;"><td style="border: 1px solid #000; padding: 2px; width: 60%;">TOTAL SALE</td><td style="border: 1px solid #000; width: 40%;"><t t-esc="day['today_sale']"/></td></tr>
+                                    <tr style="background-color: #a5d6a7;"><td style="border: 1px solid #000; padding: 2px;">TOTAL EXPENCE</td><td style="border: 1px solid #000;"><t t-esc="day['today_expense_total']"/></td></tr>
+                                    
+                                    <tr style="background-color: #a5d6a7;">
+                                        <td style="border: 1px solid #000; padding: 2px;">EXPENCE</td>
+                                        <td style="border: 1px solid #000; padding: 0; background-color: #fff;">
+                                            <table style="width: 100%; border-collapse: collapse;">
+                                                <tr>
+                                                    <td style="border-bottom: 1px solid #000; padding: 1px; color: #2e7d32; font-size: 9px;">BANK</td>
+                                                    <td style="border-left: 1px solid #000; border-bottom: 1px solid #000; padding: 1px; width: 50%;"><t t-esc="day['today_bank_expense']"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-bottom: 1px solid #000; padding: 1px; color: #2e7d32; font-size: 9px;">CASH</td>
+                                                    <td style="border-left: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;"><t t-esc="day['today_cash_expense']"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 1px; color: #2e7d32; font-size: 9px;">COD</td>
+                                                    <td style="border-left: 1px solid #000; padding: 1px;"><t t-esc="day['today_cod_expense']"/></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Dynamic Expenses -->
+                                    <t t-foreach="day['expense_breakdown']" t-as="exp">
+                                        <tr>
+                                            <td style="border: 1px solid #000; padding: 2px; text-align: right;"><t t-esc="exp['name']"/></td>
+                                            <td style="border: 1px solid #000; padding: 2px;"><t t-esc="exp['amount']"/></td>
+                                        </tr>
+                                    </t>
+                                    
+                                    <!-- Padding rows if needed -->
+                                    <tr><td style="border: 1px solid #000; padding: 8px;"></td><td style="border: 1px solid #000;"></td></tr>
+                                    <tr><td style="border: 1px solid #000; padding: 8px;"></td><td style="border: 1px solid #000;"></td></tr>
+                                    
+                                    <tr style="background-color: #a5d6a7;">
+                                        <td style="border: 1px solid #000; padding: 2px; color: #2e7d32;">TOTAL</td>
+                                        <td style="border: 1px solid #000; padding: 2px; color: #2e7d32;"><t t-esc="day['today_expense_total']"/></td>
+                                    </tr>
+                                    <tr style="background-color: #a5d6a7;">
+                                        <td style="border: 1px solid #000; padding: 2px; color: #2e7d32;">BALANCE CASH</td>
+                                        <td style="border: 1px solid #000; padding: 2px; color: #2e7d32;"><t t-esc="day['cash_closing_balance']"/></td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
                     </table>
-                    <div class="dcr-header-meta">
-                        CR: 7026399282 &amp;nbsp;|&amp;nbsp; VAT: 310248611400003
-                    </div>
-                    <div class="dcr-header-report-name">
-                        <h3>ACCOUNTING LEDGER REPORT</h3>
-                        <p>
-                            Date: <strong><t t-esc="start_date"/></strong> to <strong><t t-esc="end_date"/></strong> &amp;nbsp;|&amp;nbsp; 
-                            User: <strong><t t-esc="user.name"/></strong> &amp;nbsp;|&amp;nbsp; 
-                            Generated: <strong><t t-esc="print_time"/></strong>
-                        </p>
-                    </div>
-                </div>
-
-                <div style="width: 100%; margin-bottom: 25px;">
-                    <!-- Overall Summary -->
-                    <div>
-                        <div class="dcr-section-title">Overall Financial Summary</div>
-                        <table class="dcr-table">
-                            <tr>
-                                <td>Total Income (SAR)</td>
-                                <td class="number text-income"><t t-esc="total_income" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></td>
-                            </tr>
-                            <tr>
-                                <td>Total Expense (SAR)</td>
-                                <td class="number text-expense"><t t-esc="total_expense" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></td>
-                            </tr>
-                            <tr class="dcr-total-row">
-                                <td>NET PROFIT / LOSS</td>
-                                <td class="number">
-                                    <span t-if="net_profit &gt;= 0" style="color: #4ade80 !important;"><t t-esc="net_profit" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></span>
-                                    <span t-if="net_profit &lt; 0" style="color: #f87171 !important;"><t t-esc="net_profit" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></span>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Detailed Transactions -->
-                <div class="dcr-section-title">Detailed Transactions Ledger</div>
-                <table class="dcr-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%;">Date &amp; Time</th>
-                            <th style="width: 10%;">Inv No</th>
-                            <th style="width: 15%;">Description</th>
-                            <th style="width: 10%;">User</th>
-                            <th style="width: 10%;">Category</th>
-                            <th style="width: 10%;">Type</th>
-                            <th class="number" style="width: 10%;">Cost</th>
-                            <th class="number" style="width: 10%;">Amount</th>
-                            <th class="number" style="width: 10%;">Profit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="transactions" t-as="tx">
-                            <tr>
-                                <td style="font-weight: bold; color: #0f172a;"><t t-esc="tx['date']"/></td>
-                                <td><t t-esc="tx['cargo_invoice_id'][1] if tx['cargo_invoice_id'] else ''"/></td>
-                                <td><t t-esc="tx['name']"/></td>
-                                <td><span class="badge" style="background: #e2e8f0; color: #0f172a;"><t t-esc="tx['user_id'][1] if tx['user_id'] else 'System'"/></span></td>
-                                <td><t t-esc="tx['category_id'][1] if tx['category_id'] else ''"/></td>
-                                <td>
-                                    <t t-if="tx['type'] == 'income'"><span class="text-income">Income</span></t>
-                                    <t t-elif="tx['type'] == 'expense'"><span class="text-expense">Expense</span></t>
-                                    <t t-else=""><t t-esc="tx['type']"/></t>
-                                </td>
-                                <td class="number">
-                                    <span t-if="tx['company_cost']"><t t-esc="tx['company_cost']" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></span>
-                                    <span t-else="">-</span>
-                                </td>
-                                <td class="number" style="font-weight: bold;">
-                                    <t t-esc="tx['amount']" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
-                                </td>
-                                <td class="number" style="font-weight: bold;">
-                                    <span t-if="tx['net_impact'] &gt;= 0" class="text-income">+<t t-esc="tx['net_impact']" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></span>
-                                    <span t-if="tx['net_impact'] &lt; 0" class="text-expense"><t t-esc="tx['net_impact']" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></span>
-                                </td>
-                            </tr>
-                        </t>
-                        <t t-if="not transactions">
-                            <tr>
-                                <td colspan="9" class="text-center" style="padding: 20px; color: #94a3b8; font-style: italic;">No transactions recorded for this period.</td>
-                            </tr>
-                        </t>
-                        <t t-else="">
-                            <tr class="dcr-total-row">
-                                <td colspan="8" style="text-align: right; padding-right: 15px;">NET PROFIT / LOSS</td>
-                                <td class="number">
-                                    <span t-if="net_profit &gt;= 0" style="color: #4ade80 !important;"><t t-esc="net_profit" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></span>
-                                    <span t-if="net_profit &lt; 0" style="color: #f87171 !important;"><t t-esc="net_profit" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></span>
-                                </td>
-                            </tr>
-                        </t>
-                    </tbody>
-                </table>
-
-                <!-- Footer -->
-                <div class="dcr-footer">
-                    Accounting Ledger Report | Generated on: <t t-esc="print_time"/> | Generated by: <t t-esc="user.name"/><br/>
-                    Retex Cargo Express | Riyadh, Saudi Arabia
-                </div>
+                </t>
+                
             </div>
         </t>
     </template>

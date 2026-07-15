@@ -15,6 +15,12 @@ class SimpleAccountingTransaction(models.Model):
         ('expense', 'Expense (Debit)')
     ], string='Type', required=True, default='expense')
     
+    payment_method = fields.Selection([
+        ('cash', 'Cash (Counter)'),
+        ('bank', 'Bank'),
+        ('cod', 'COD (Cash on Delivery)')
+    ], string='Payment Method', required=True, default='cash')
+    
     # ── Cargo Integration ──────────────────────────────────────────────
     cargo_invoice_id = fields.Many2one('cargo.manual.invoice', string='Cargo Invoice')
     shipper_name = fields.Char(string='Shipper Name')

@@ -22,6 +22,8 @@
         'report/simple_accounting_reports.xml',
         'report/simple_accounting_report_template.xml',
         'wizard/simple_accounting_report_wizard_views.xml',
+        'wizard/smsa_settlement_report_wizard_views.xml',
+        'report/smsa_settlement_report_template.xml',
         'data/cron_data.xml',
     ],
     'installable': True,

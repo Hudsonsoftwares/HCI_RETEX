@@ -39,20 +39,124 @@ class SimpleAccountingReportWizard(models.TransientModel):
         ]
         transactions = self.env['simple.accounting.transaction'].search(domain, order='date asc')
         
-        income_txs = transactions.filtered(lambda t: t.type == 'income')
-        expense_txs = transactions.filtered(lambda t: t.type == 'expense')
+        # Group by day
+        from collections import defaultdict
         
-        total_income = sum(income_txs.mapped('amount'))
-        total_expense = sum(expense_txs.mapped('amount')) + sum(income_txs.mapped('company_cost'))
-        net_profit = sum(transactions.mapped('net_impact'))
+        daily_groups = defaultdict(list)
+        for tx in transactions:
+            daily_groups[tx.date.date()].append(tx)
+            
+        sorted_days = sorted(daily_groups.keys())
+        days_data = []
         
+        for day in sorted_days:
+            day_txs = self.env['simple.accounting.transaction'].browse([t.id for t in daily_groups[day]])
+            
+            day_start_datetime = datetime.combine(day, time.min)
+            
+            # Opening Cash Balance
+            past_cash_txs = self.env['simple.accounting.transaction'].search([
+                ('date', '<', day_start_datetime),
+                ('payment_method', '=', 'cash')
+            ])
+            cash_opening_balance = sum(past_cash_txs.mapped('net_impact'))
+            
+            # Bank Opening Balance
+            past_bank_txs = self.env['simple.accounting.transaction'].search([
+                ('date', '<', day_start_datetime),
+                ('payment_method', '=', 'bank')
+            ])
+            bank_opening_balance = sum(past_bank_txs.mapped('net_impact'))
+            
+            # Remin Sale (Monthly)
+            month_start_datetime = datetime.combine(day.replace(day=1), time.min)
+            past_month_sales = self.env['simple.accounting.transaction'].search([
+                ('date', '>=', month_start_datetime),
+                ('date', '<', day_start_datetime),
+                ('type', '=', 'income')
+            ])
+            remin_sale = sum(past_month_sales.mapped('amount'))
+            
+            # Today's Breakdown
+            income_txs = day_txs.filtered(lambda t: t.type == 'income')
+            expense_txs = day_txs.filtered(lambda t: t.type == 'expense')
+            
+            today_sale = sum(income_txs.mapped('amount'))
+            today_expense = sum(expense_txs.mapped('amount')) + sum(income_txs.mapped('company_cost'))
+            
+            today_bank_income = sum(income_txs.filtered(lambda t: t.payment_method == 'bank').mapped('amount'))
+            today_cash_income = sum(income_txs.filtered(lambda t: t.payment_method == 'cash').mapped('amount'))
+            
+            today_bank_expense = sum(expense_txs.filtered(lambda t: t.payment_method == 'bank').mapped('amount')) + sum(income_txs.filtered(lambda t: t.payment_method == 'bank').mapped('company_cost'))
+            today_cash_expense = sum(expense_txs.filtered(lambda t: t.payment_method == 'cash').mapped('amount')) + sum(income_txs.filtered(lambda t: t.payment_method == 'cash').mapped('company_cost'))
+            
+            # COD Expense: Explicitly log the Profit of COD incomes as an expense, plus any direct COD expenses
+            today_cod_expense = sum(expense_txs.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(income_txs.filtered(lambda t: t.payment_method == 'cod').mapped('net_impact'))
+            
+            # Ensure the total expense includes the COD expense (profit)
+            today_expense = today_bank_expense + today_cash_expense + today_cod_expense
+            
+            expense_lines = []
+            for tx in expense_txs:
+                expense_lines.append({'name': tx.category_id.name if tx.category_id else tx.name, 'amount': tx.amount})
+            for tx in income_txs:
+                if tx.company_cost > 0:
+                    expense_lines.append({'name': f"Cost: {tx.category_id.name if tx.category_id else tx.name}", 'amount': tx.company_cost})
+                    
+            condensed_expenses = defaultdict(float)
+            for ex in expense_lines:
+                condensed_expenses[ex['name']] += ex['amount']
+            expense_breakdown = [{'name': k, 'amount': v} for k, v in condensed_expenses.items() if v > 0]
+            
+            today_cash_balance = today_cash_income - today_cash_expense
+            cash_closing_balance = cash_opening_balance + today_cash_balance
+            
+            today_bank = today_bank_income - today_bank_expense
+            bank_closing_balance = bank_opening_balance + today_bank
+            
+            # Ensure transactions are serialized correctly for qweb
+            tx_data = []
+            for t in day_txs:
+                tx_data.append({
+                    'date': t.date.strftime('%d/%m/%Y') if t.date else '',
+                    'name': t.name,
+                    'cargo_invoice_id': t.cargo_invoice_id.display_name if t.cargo_invoice_id else '',
+                    'shipper_name': t.shipper_name or '',
+                    'mobile': t.mobile or '',
+                    'weight': t.weight or '',
+                    'destination': t.destination or '',
+                    'service': t.service or '',
+                    'tracking_no': t.tracking_no or '',
+                    'amount': t.amount,
+                    'company_cost': t.company_cost,
+                    'type': t.type,
+                    'payment_method': t.payment_method,
+                    'net_impact': t.net_impact,
+                })
+            
+            days_data.append({
+                'date_str': day.strftime('%d-%b-%y').upper(),
+                'transactions': tx_data,
+                'bank_opening_balance': bank_opening_balance,
+                'today_bank': today_bank,
+                'bank_closing_balance': bank_closing_balance,
+                'remin_sale': remin_sale,
+                'today_sale': today_sale,
+                'total_sale': remin_sale + today_sale,
+                'cash_opening_balance': cash_opening_balance,
+                'today_cash_balance': today_cash_balance,
+                'cash_closing_balance': cash_closing_balance,
+                'today_expense_total': today_expense,
+                'today_bank_expense': today_bank_expense,
+                'today_cash_expense': today_cash_expense,
+                'today_cod_expense': today_cod_expense,
+                'expense_breakdown': expense_breakdown,
+            })
+            
         data = {
             'start_date': self.start_date,
             'end_date': self.end_date,
-            'transactions': transactions.read(['date', 'name', 'cargo_invoice_id', 'user_id', 'category_id', 'type', 'amount', 'company_cost', 'net_impact']),
-            'total_income': total_income,
-            'total_expense': total_expense,
-            'net_profit': net_profit,
+            'days_data': days_data,
             'company_name': self.env.company.name,
             'currency': self.env.company.currency_id.symbol,
             'print_time': fields.Datetime.now(),
