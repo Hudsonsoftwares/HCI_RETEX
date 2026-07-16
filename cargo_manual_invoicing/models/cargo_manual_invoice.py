@@ -98,7 +98,18 @@ class CargoManualInvoice(models.Model):
         ('by_road', 'By Road'),
         ('manual', 'Manual (Other)')
     ], string='Delivery Partner', required=True, default='dhl')
-    manual_delivery_partner = fields.Char(string='Manual Delivery Partner')
+    
+    manual_delivery_partner = fields.Char(string='Specify Partner')
+    
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        """ Force descending order when grouping by date so newest days appear first """
+        if not orderby and groupby:
+            # Check if any grouping involves the 'shipping_date' field
+            if any(g.split(':')[0] == 'shipping_date' for g in (groupby if isinstance(groupby, list) else [groupby])):
+                orderby = 'shipping_date desc'
+        return super(CargoManualInvoice, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+
     carrier = fields.Char(string='Carrier', compute='_compute_carrier', store=True)
 
     @api.depends('delivery_partner', 'manual_delivery_partner')
@@ -401,13 +412,11 @@ class CargoManualInvoice(models.Model):
         recipients = []
         if self.shipper_email:
             recipients.append(self.shipper_email)
-        if self.receiver_email and self.receiver_email not in recipients:
-            recipients.append(self.receiver_email)
-
+            
         if not recipients:
             raise ValidationError(
                 'No email addresses found!\n'
-                'Please fill in Shipper Email or Receiver Email before sending.'
+                'Please fill in Shipper Email before sending.'
             )
 
         # Generate PDF attachment
@@ -546,17 +555,17 @@ class CargoManualInvoice(models.Model):
 
     def action_send_whatsapp(self):
         self.ensure_one()
-        if not self.receiver_mobile:
-            raise ValidationError("Receiver Mobile number is required to send a WhatsApp message.")
+        if not self.shipper_mobile:
+            raise ValidationError("Shipper Mobile number is required to send a WhatsApp message.")
             
         # Clean the phone number (remove spaces, plus, dashes)
-        phone = re.sub(r'[^0-9]', '', self.receiver_mobile)
+        phone = re.sub(r'[^0-9]', '', self.shipper_mobile)
         if not phone:
-            raise ValidationError("Invalid Receiver Mobile number.")
+            raise ValidationError("Invalid Shipper Mobile number.")
 
         # Build message
         message = (
-            f"Hello {self.receiver_name},\n\n"
+            f"Hello {self.shipper_name},\n\n"
             f"Your cargo invoice *{self.invoice_number}* has been successfully generated.\n\n"
             f"📦 *Shipment Details*\n"
             f"- From: {self.origin}\n"

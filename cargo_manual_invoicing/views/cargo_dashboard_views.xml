@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cargo_dashboard_form" model="ir.ui.view">
+        <field name="name">cargo.dashboard.form</field>
+        <field name="model">cargo.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Live Operations Overview" create="false" edit="false" delete="false">
+                <style>
+                    .saas-dashboard {
+                        background-color: #f8f9fc;
+                        padding: 20px;
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                    }
+
+                    .saas-card {
+                        background: white;
+                        border-radius: 12px;
+                        padding: 15px;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 10px 20px rgba(0,0,0,0.04);
+                        transition: all 0.3s ease;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    .saas-card:hover {
+                        transform: translateY(-3px);
+                        box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+                    }
+                    .saas-icon-box {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 18px;
+                        margin-bottom: 10px;
+                    }
+                    .bg-soft-success { background-color: #e6f4ea; color: #1e8e3e; }
+                    .bg-soft-primary { background-color: #e8f0fe; color: #1a73e8; }
+                    .bg-soft-warning { background-color: #fef7e0; color: #f9ab00; }
+                    .bg-soft-purple { background-color: #f3e8fd; color: #9334e6; }
+                    .bg-soft-danger { background-color: #fce8e6; color: #d93025; }
+                    .bg-soft-info { background-color: #e4f7fb; color: #12b5cb; }
+                    
+                    .saas-title {
+                        font-size: 11px;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        font-weight: 700;
+                        color: #5f6368;
+                        margin-bottom: 4px;
+                    }
+                    .saas-value {
+                        font-size: 24px;
+                        font-weight: 800;
+                        color: #202124;
+                        letter-spacing: -0.5px;
+                        margin-top: auto;
+                    }
+                    .section-title {
+                        font-size: 15px;
+                        font-weight: 700;
+                        color: #3c4043;
+                        margin-bottom: 10px;
+                        margin-top: 15px;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .section-title i {
+                        margin-right: 8px;
+                        color: #9aa0a6;
+                    }
+                </style>
+                <sheet class="saas-dashboard">
+                    
+
+
+                    <div class="section-title" style="margin-top: 0;">
+                        <i class="fa fa-calendar-day"></i> Today's Performance
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-primary">
+                                    <i class="fa fa-money"></i>
+                                </div>
+                                <div class="saas-title">Today's Revenue</div>
+                                <div class="saas-value"><field name="today_revenue" nolabel="1"/></div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-warning">
+                                    <i class="fa fa-file-text-o"></i>
+                                </div>
+                                <div class="saas-title">Today's Invoices</div>
+                                <div class="saas-value"><field name="today_invoice_count" nolabel="1"/></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">
+                        <i class="fa fa-calendar-alt"></i> This Month
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-6">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-success">
+                                    <i class="fa fa-line-chart"></i>
+                                </div>
+                                <div class="saas-title">Monthly Revenue</div>
+                                <div class="saas-value"><field name="month_revenue" nolabel="1"/></div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-info">
+                                    <i class="fa fa-files-o"></i>
+                                </div>
+                                <div class="saas-title">Monthly Invoices</div>
+                                <div class="saas-value"><field name="month_invoice_count" nolabel="1"/></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">
+                        <i class="fa fa-calendar-check-o"></i> This Year
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-purple">
+                                    <i class="fa fa-bar-chart"></i>
+                                </div>
+                                <div class="saas-title">Yearly Revenue</div>
+                                <div class="saas-value"><field name="year_revenue" nolabel="1"/></div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-danger">
+                                    <i class="fa fa-folder-open-o"></i>
+                                </div>
+                                <div class="saas-title">Yearly Invoices</div>
+                                <div class="saas-value"><field name="year_invoice_count" nolabel="1"/></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">
+                        <i class="fa fa-globe"></i> All Time Totals
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-success">
+                                    <i class="fa fa-bank"></i>
+                                </div>
+                                <div class="saas-title">Total Revenue</div>
+                                <div class="saas-value"><field name="total_revenue" nolabel="1"/></div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-primary">
+                                    <i class="fa fa-archive"></i>
+                                </div>
+                                <div class="saas-title">Total Invoices</div>
+                                <div class="saas-value"><field name="total_invoice_count" nolabel="1"/></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dashboard Action -->
+    <record id="action_cargo_dashboard" model="ir.actions.server">
+        <field name="name">Dashboard</field>
+        <field name="model_id" ref="cargo_manual_invoicing.model_cargo_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">
+# Ensure a single record exists
+dashboard = env['cargo.dashboard'].search([], limit=1)
+if not dashboard:
+    dashboard = env['cargo.dashboard'].create({})
+
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Live Dashboard',
+    'res_model': 'cargo.dashboard',
+    'res_id': dashboard.id,
+    'view_mode': 'form',
+    'target': 'main',
+}
+        </field>
+    </record>
+</odoo>

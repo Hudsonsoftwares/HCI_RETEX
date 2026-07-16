@@ -7,15 +7,17 @@
               web_icon="cargo_manual_invoicing,static/description/icon.png"
               sequence="90"/>
 
-    <!-- ── Operations ── -->
-    <menuitem id="menu_cargo_invoicing_main"
-              name="Operations"
+    <!-- Dashboard -->
+    <menuitem id="menu_cargo_dashboard"
+              name="Dashboard"
               parent="menu_cargo_invoicing_root"
-              sequence="10"/>
+              action="action_cargo_dashboard"
+              sequence="5"/>
 
-    <menuitem id="menu_cargo_manual_invoice"
-              name="Cargo Invoices"
-              parent="menu_cargo_invoicing_main"
+    <!-- ── Invoice ── -->
+    <menuitem id="menu_cargo_invoicing_main"
+              name="Invoice"
+              parent="menu_cargo_invoicing_root"
               action="action_cargo_manual_invoice"
               sequence="10"/>
 
@@ -30,12 +32,6 @@
               parent="menu_cargo_reporting"
               action="action_cargo_daily_report_wizard"
               sequence="30"/>
-
-    <menuitem id="menu_daily_collection_report_main"
-              name="Daily Collection Report"
-              parent="menu_cargo_invoicing_main"
-              action="action_cargo_daily_report_wizard"
-              sequence="20"/>
 
     <menuitem id="menu_cargo_invoice_graph"
               name="Invoice Analysis (Chart)"
