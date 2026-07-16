@@ -44,7 +44,7 @@
                     <table style="width: 100%; border-collapse: collapse; font-size: 10px; border: 1px solid #000; text-align: center; margin-bottom: 10px;">
                         <thead>
                             <tr style="background-color: #385a3a; color: #fff;">
-                                <th style="border: 1px solid #000; padding: 3px;">DATE</th>
+                                <th style="border: 1px solid #000; padding: 3px;">TYPE</th>
                                 <th style="border: 1px solid #000; padding: 3px;">METHOD</th>
                                 <th style="border: 1px solid #000; padding: 3px;">INV NO</th>
                                 <th style="border: 1px solid #000; padding: 3px;">SHIPPER NAME</th>
@@ -60,7 +60,7 @@
                         <tbody>
                             <t t-foreach="day['transactions']" t-as="tx">
                                 <tr>
-                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['date']"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['type'].upper()"/></td>
                                     <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['payment_method'].upper()"/></td>
                                     <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['cargo_invoice_id']"/></td>
                                     <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['shipper_name']"/></td>
