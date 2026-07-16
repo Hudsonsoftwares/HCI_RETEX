@@ -21,6 +21,15 @@ class SimpleAccountingTransaction(models.Model):
         ('cod', 'COD (Cash on Delivery)')
     ], string='Payment Method', required=True, default='cash')
     
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        """ Force descending order when grouping by date so newest days appear first """
+        if not orderby and groupby:
+            # Check if any grouping involves the 'date' field
+            if any(g.split(':')[0] == 'date' for g in (groupby if isinstance(groupby, list) else [groupby])):
+                orderby = 'date desc'
+        return super(SimpleAccountingTransaction, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+    
     # ── Cargo Integration ──────────────────────────────────────────────
     cargo_invoice_id = fields.Many2one('cargo.manual.invoice', string='Cargo Invoice')
     shipper_name = fields.Char(string='Shipper Name')
@@ -35,7 +44,7 @@ class SimpleAccountingTransaction(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency', 
                                   default=lambda self: self.env.company.currency_id)
     
-    company_cost = fields.Monetary(string='Company Cost', currency_field='currency_id')
+    company_cost = fields.Monetary(string='Actual Cost', currency_field='currency_id')
     selling_price = fields.Monetary(string='Bill Amount', currency_field='currency_id')
     amount = fields.Monetary(string='Total Amount', required=True, currency_field='currency_id')
     

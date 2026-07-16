@@ -16,6 +16,9 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'wizard/simple_accounting_pnl_wizard_views.xml',
+        'report/simple_accounting_pnl_report.xml',
+        'views/simple_accounting_dashboard_views.xml',
         'views/simple_accounting_menus.xml',
         'views/simple_accounting_category_views.xml',
         'views/simple_accounting_transaction_views.xml',

@@ -8,7 +8,8 @@
             <list string="Transactions" 
                   decoration-success="net_impact &gt;= 0"
                   decoration-danger="net_impact &lt; 0"
-                  sample="1">
+                  sample="1"
+                  expand="1">
                 <field name="date" optional="show"/>
                 <field name="cargo_invoice_id" decoration-bf="1" optional="show"/>
                 <field name="name" decoration-bf="1"/>
@@ -39,42 +40,42 @@
                     <widget name="web_ribbon" title="EXPENSE" bg_color="text-bg-danger" invisible="type != 'expense'"/>
                     
                     <div class="oe_title">
-                        <label for="name" string="Transaction Description"/>
+                        <label for="name" string="TRANSACTION DESCRIPTION"/>
                         <h1><field name="name" placeholder="e.g. Invoice #1234 or Office Rent"/></h1>
                     </div>
                     
                     <group>
-                        <group string="General Info">
-                            <field name="type" widget="radio" options="{'horizontal': true}"/>
-                            <field name="payment_method" widget="radio" options="{'horizontal': true}"/>
-                            <field name="category_id"/>
-                            <field name="date"/>
-                            <field name="user_id" widget="many2one_avatar_user"/>
+                        <group string="GENERAL INFO">
+                            <field name="type" widget="radio" options="{'horizontal': true}" string="TYPE"/>
+                            <field name="payment_method" widget="radio" options="{'horizontal': true}" string="PAYMENT METHOD"/>
+                            <field name="category_id" string="CATEGORY"/>
+                            <field name="date" string="DATE &amp; TIME"/>
+                            <field name="user_id" widget="many2one_avatar_user" string="CREATED BY"/>
                         </group>
-                        <group string="Financials">
+                        <group string="FINANCIALS">
                             <field name="currency_id" invisible="1"/>
-                            <field name="company_cost" invisible="type != 'income'" widget="monetary"/>
-                            <field name="selling_price" invisible="type != 'income'" widget="monetary"/>
+                            <field name="company_cost" invisible="type != 'income'" widget="monetary" string="ACTUAL COST"/>
+                            <field name="selling_price" invisible="type != 'income'" widget="monetary" string="BILL AMOUNT"/>
                             <hr invisible="type != 'income'"/>
-                            <field name="amount" readonly="type == 'income'" force_save="1" widget="monetary" style="font-weight: bold; font-size: 1.1em; color: #1e293b;"/>
-                            <field name="net_impact" widget="monetary" style="font-weight: bold; font-size: 1.2em;" decoration-success="net_impact &gt;= 0" decoration-danger="net_impact &lt; 0"/>
+                            <field name="amount" readonly="type == 'income'" force_save="1" widget="monetary" style="font-weight: bold; font-size: 1.1em; color: #1e293b;" string="TOTAL AMOUNT"/>
+                            <field name="net_impact" widget="monetary" style="font-weight: bold; font-size: 1.2em;" decoration-success="net_impact &gt;= 0" decoration-danger="net_impact &lt; 0" string="NET PROFIT / LOSS"/>
                         </group>
                     </group>
                     
                     <notebook>
-                        <page string="Cargo Documentation" invisible="type != 'income'">
+                        <page string="CARGO DOCUMENTATION" invisible="type != 'income'">
                             <group>
                                 <group>
-                                    <field name="cargo_invoice_id" options="{'no_create': True}" style="font-weight: bold;"/>
-                                    <field name="shipper_name"/>
-                                    <field name="mobile"/>
+                                    <field name="cargo_invoice_id" options="{'no_create': True}" style="font-weight: bold;" string="CARGO INVOICE"/>
+                                    <field name="shipper_name" string="SHIPPER NAME"/>
+                                    <field name="mobile" string="MOBILE"/>
                                 </group>
                                 <group>
-                                    <field name="weight"/>
-                                    <field name="destination"/>
-                                    <field name="service"/>
-                                    <field name="tracking_no"/>
-                                    <field name="cargo_gross_total" widget="monetary" decoration-bf="1"/>
+                                    <field name="weight" string="WEIGHT"/>
+                                    <field name="destination" string="DESTINATION"/>
+                                    <field name="service" string="SERVICE (CARRIER)"/>
+                                    <field name="tracking_no" string="TRACKING NO"/>
+                                    <field name="cargo_gross_total" widget="monetary" decoration-bf="1" string="GROSS TOTAL (SAR)"/>
                                 </group>
                             </group>
                         </page>
@@ -141,16 +142,11 @@
         <field name="context">{'search_default_this_month': 1, 'search_default_group_date_day': 1}</field>
     </record>
 
-    <menuitem id="menu_simple_accounting_transaction_action"
-              name="All Transactions"
-              parent="menu_simple_accounting_transactions"
-              action="action_simple_accounting_transaction"
-              sequence="10"/>
-              
+
     <menuitem id="menu_simple_accounting_analysis_action"
-              name="Profit &amp; Loss Analysis"
+              name="Profit &amp; Loss Report"
               parent="menu_simple_accounting_reporting"
-              action="action_simple_accounting_transaction"
+              action="action_simple_accounting_pnl_wizard"
               sequence="10"/>
 
     <!-- Data Migration Trigger -->

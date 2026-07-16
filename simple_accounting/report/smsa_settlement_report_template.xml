@@ -4,56 +4,70 @@
         <t t-call="web.html_container">
             <div class="article o_report_no_header" style="margin: 0; padding: 30px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; line-height: 1.5; color: #1a1a1a;">
                 
-                <!-- Header -->
-                <div style="background: #e2e8f0; color: #0f172a; border-radius: 8px; margin-bottom: 30px; padding: 20px; border: 1px solid #cbd5e1;">
-                    <table style="width: 100%;">
+                <!-- Dark Header Block (Matches PnL Report Style) -->
+                <div style="background-color: #0b0f19; color: #ffffff; border-radius: 8px; padding: 20px 30px; margin-bottom: 20px;">
+                    <!-- Company Names -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; color: #ffffff;">
                         <tr>
-                            <td style="width: 50%;">
-                                <h1 style="margin: 0; font-size: 24px; font-weight: bold; color: #0f172a;">SMSA SETTLEMENT REPORT</h1>
-                                <p style="margin: 5px 0 0 0; font-size: 14px; color: #475569;">
-                                    Period: <strong><t t-esc="start_date"/></strong> to <strong><t t-esc="end_date"/></strong>
-                                </p>
+                            <td style="width: 50%; text-align: left; vertical-align: middle;">
+                                <h2 style="margin: 0; font-size: 20px; font-weight: bold; color: #ffffff;">Retex Cargo Express</h2>
                             </td>
-                            <td style="text-align: right; width: 50%;">
-                                <h2 style="margin: 0; font-size: 18px; font-weight: 800;">Retex Cargo Express</h2>
-                                <p style="margin: 5px 0 0 0; font-size: 12px; color: #475569;">Generated: <t t-esc="print_time"/></p>
+                            <td style="width: 50%; text-align: right; vertical-align: middle;" dir="rtl">
+                                <h2 style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff;">مؤسسة قافلة السرعة للشحن</h2>
                             </td>
                         </tr>
                     </table>
+                    
+                    <!-- Divider & Tax Info -->
+                    <div style="border-top: 1px solid #334155; border-bottom: 1px solid #334155; padding: 8px 0; text-align: center; font-size: 10px; color: #94a3b8; margin-bottom: 15px;">
+                        CR: 7026399282 | VAT: 310248611400003
+                    </div>
+                    
+                    <!-- Report Title & Metadata -->
+                    <div style="text-align: center;">
+                        <h1 style="margin: 0 0 5px 0; font-size: 20px; font-weight: bold; letter-spacing: 1px; color: #ffffff; text-transform: uppercase;">SMSA SETTLEMENT REPORT</h1>
+                        <div style="font-size: 11px; color: #94a3b8;">
+                            Date: <strong style="color: #ffffff;"><t t-esc="start_date"/></strong> to <strong style="color: #ffffff;"><t t-esc="end_date"/></strong> 
+                            | User: <strong style="color: #ffffff;"><t t-esc="current_user"/></strong> 
+                            | Generated: <strong style="color: #ffffff;"><t t-esc="print_time"/></strong>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Financial Summary Grid -->
-                <div style="display: flex; gap: 20px; margin-bottom: 30px;">
-                    <!-- SMSA Fees Box -->
-                    <div style="flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px;">
-                        <h4 style="margin: 0 0 10px 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Total SMSA Service Fees</h4>
-                        <div style="font-size: 24px; font-weight: bold; color: #dc2626;">
-                            <t t-esc="total_service_charges"/> <span style="font-size: 14px; color: #94a3b8;"><t t-esc="currency"/></span>
-                        </div>
-                        <p style="margin: 5px 0 0 0; font-size: 11px; color: #64748b;">Total cost of all packages (Cash, Bank, COD)</p>
-                    </div>
+                <table style="width: 100%; border-collapse: separate; border-spacing: 20px 0; margin-bottom: 30px;">
+                    <tr>
+                        <!-- SMSA Fees Box -->
+                        <td style="width: 33%; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px; vertical-align: top;">
+                            <h4 style="margin: 0 0 10px 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Total SMSA Service Fees</h4>
+                            <div style="font-size: 24px; font-weight: bold; color: #dc2626;">
+                                <t t-esc="total_service_charges"/> <span style="font-size: 14px; color: #94a3b8;"><t t-esc="currency"/></span>
+                            </div>
+                            <p style="margin: 5px 0 0 0; font-size: 11px; color: #64748b;">Total cost of all packages</p>
+                        </td>
 
-                    <!-- COD Collected Box -->
-                    <div style="flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px;">
-                        <h4 style="margin: 0 0 10px 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Total COD Collected</h4>
-                        <div style="font-size: 24px; font-weight: bold; color: #16a34a;">
-                            -<t t-esc="total_cod_collected"/> <span style="font-size: 14px; color: #94a3b8;"><t t-esc="currency"/></span>
-                        </div>
-                        <p style="margin: 5px 0 0 0; font-size: 11px; color: #64748b;">SMSA holds this money, reducing your bill</p>
-                    </div>
+                        <!-- COD Collected Box -->
+                        <td style="width: 33%; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px; vertical-align: top;">
+                            <h4 style="margin: 0 0 10px 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Total COD Collected</h4>
+                            <div style="font-size: 24px; font-weight: bold; color: #16a34a;">
+                                -<t t-esc="total_cod_collected"/> <span style="font-size: 14px; color: #94a3b8;"><t t-esc="currency"/></span>
+                            </div>
+                            <p style="margin: 5px 0 0 0; font-size: 11px; color: #64748b;">SMSA holds this money</p>
+                        </td>
 
-                    <!-- Net Balance Box -->
-                    <div style="flex: 1; background: #f8fafc; border: 2px solid #0f172a; border-radius: 6px; padding: 15px;">
-                        <h4 style="margin: 0 0 10px 0; font-size: 13px; color: #0f172a; text-transform: uppercase; font-weight: bold;">Net Owed to SMSA</h4>
-                        <div style="font-size: 28px; font-weight: 900; color: #0f172a;">
-                            <t t-esc="net_owed"/> <span style="font-size: 16px; color: #64748b;"><t t-esc="currency"/></span>
-                        </div>
-                        <p style="margin: 5px 0 0 0; font-size: 11px; color: #64748b; font-style: italic;">
-                            <t t-if="net_owed &lt; 0">SMSA owes you this amount.</t>
-                            <t t-else="">Amount you must pay SMSA.</t>
-                        </p>
-                    </div>
-                </div>
+                        <!-- Net Balance Box -->
+                        <td style="width: 33%; background: #f8fafc; border: 2px solid #0f172a; border-radius: 6px; padding: 15px; vertical-align: top;">
+                            <h4 style="margin: 0 0 10px 0; font-size: 13px; color: #0f172a; text-transform: uppercase; font-weight: bold;">Net Owed to SMSA</h4>
+                            <div style="font-size: 28px; font-weight: 900; color: #0f172a;">
+                                <t t-esc="net_owed"/> <span style="font-size: 16px; color: #64748b;"><t t-esc="currency"/></span>
+                            </div>
+                            <p style="margin: 5px 0 0 0; font-size: 11px; color: #64748b; font-style: italic;">
+                                <t t-if="net_owed &lt; 0">SMSA owes you this amount.</t>
+                                <t t-else="">Amount you must pay SMSA.</t>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
 
                 <!-- Breakdown: Cash & Bank Packages -->
                 <div style="margin-bottom: 30px;">

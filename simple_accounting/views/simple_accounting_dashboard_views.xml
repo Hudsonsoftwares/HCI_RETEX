@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_simple_accounting_dashboard_form" model="ir.ui.view">
+        <field name="name">simple.accounting.dashboard.form</field>
+        <field name="model">simple.accounting.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Live Financial Overview" create="false" edit="false" delete="false">
+                <style>
+                    .saas-dashboard {
+                        background-color: #f8f9fc;
+                        padding: 20px;
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                    }
+                    .saas-header {
+                        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                        color: white;
+                        padding: 40px 30px;
+                        border-radius: 16px;
+                        box-shadow: 0 10px 30px rgba(30, 60, 114, 0.2);
+                        margin-bottom: 40px;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .saas-header::after {
+                        content: '';
+                        position: absolute;
+                        top: -50%;
+                        right: -10%;
+                        width: 300px;
+                        height: 300px;
+                        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+                        border-radius: 50%;
+                    }
+                    .saas-card {
+                        background: white;
+                        border-radius: 16px;
+                        padding: 24px;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 10px 20px rgba(0,0,0,0.04);
+                        transition: all 0.3s ease;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    .saas-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+                    }
+                    .saas-icon-box {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 22px;
+                        margin-bottom: 20px;
+                    }
+                    .bg-soft-success { background-color: #e6f4ea; color: #1e8e3e; }
+                    .bg-soft-primary { background-color: #e8f0fe; color: #1a73e8; }
+                    .bg-soft-warning { background-color: #fef7e0; color: #f9ab00; }
+                    .bg-soft-purple { background-color: #f3e8fd; color: #9334e6; }
+                    .bg-soft-danger { background-color: #fce8e6; color: #d93025; }
+                    .bg-soft-info { background-color: #e4f7fb; color: #12b5cb; }
+                    
+                    .saas-title {
+                        font-size: 13px;
+                        text-transform: uppercase;
+                        letter-spacing: 1.2px;
+                        font-weight: 700;
+                        color: #5f6368;
+                        margin-bottom: 8px;
+                    }
+                    .saas-value {
+                        font-size: 32px;
+                        font-weight: 800;
+                        color: #202124;
+                        letter-spacing: -1px;
+                        margin-top: auto;
+                    }
+                    .section-title {
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #3c4043;
+                        margin-bottom: 24px;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .section-title i {
+                        margin-right: 12px;
+                        color: #9aa0a6;
+                    }
+                </style>
+                <sheet class="saas-dashboard">
+                    
+                    <div class="section-title">
+                        <i class="fa fa-university"></i> Available Funds (All Time)
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-4">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-success">
+                                    <i class="fa fa-money"></i>
+                                </div>
+                                <div class="saas-title">Counter Cash</div>
+                                <div class="saas-value">
+                                    <field name="cash_balance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-4">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-primary">
+                                    <i class="fa fa-building"></i>
+                                </div>
+                                <div class="saas-title">Bank Balance</div>
+                                <div class="saas-value">
+                                    <field name="bank_balance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-4">
+                            <div class="saas-card">
+                                <div class="saas-icon-box bg-soft-warning">
+                                    <i class="fa fa-pie-chart"></i>
+                                </div>
+                                <div class="saas-title">Total Profit</div>
+                                <div class="saas-value">
+                                    <field name="total_profit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title mt-5">
+                        <i class="fa fa-calendar-check-o"></i> Activity Overview
+                    </div>
+                    
+                    <notebook class="saas-notebook">
+                        <page string="Today">
+                            <div class="row mt-4 mb-4">
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-primary">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <div class="saas-title">Transactions</div>
+                                        <div class="saas-value">
+                                            <field name="today_transaction_count" readonly="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-purple">
+                                            <i class="fa fa-line-chart"></i>
+                                        </div>
+                                        <div class="saas-title">Total Sales</div>
+                                        <div class="saas-value">
+                                            <field name="today_sale" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-danger">
+                                            <i class="fa fa-credit-card"></i>
+                                        </div>
+                                        <div class="saas-title">Total Expenses</div>
+                                        <div class="saas-value">
+                                            <field name="today_expense" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-success">
+                                            <i class="fa fa-trophy"></i>
+                                        </div>
+                                        <div class="saas-title">Net Profit</div>
+                                        <div class="saas-value" style="color: #0f5132;">
+                                            <field name="today_profit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                        
+                        <page string="This Month">
+                            <div class="row mt-4 mb-4">
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-primary">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <div class="saas-title">Transactions</div>
+                                        <div class="saas-value">
+                                            <field name="month_transaction_count" readonly="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-purple">
+                                            <i class="fa fa-line-chart"></i>
+                                        </div>
+                                        <div class="saas-title">Total Sales</div>
+                                        <div class="saas-value">
+                                            <field name="month_sale" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-danger">
+                                            <i class="fa fa-credit-card"></i>
+                                        </div>
+                                        <div class="saas-title">Total Expenses</div>
+                                        <div class="saas-value">
+                                            <field name="month_expense" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-success">
+                                            <i class="fa fa-trophy"></i>
+                                        </div>
+                                        <div class="saas-title">Net Profit</div>
+                                        <div class="saas-value" style="color: #0f5132;">
+                                            <field name="month_profit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                        
+                        <page string="This Year">
+                            <div class="row mt-4 mb-4">
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-primary">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <div class="saas-title">Transactions</div>
+                                        <div class="saas-value">
+                                            <field name="year_transaction_count" readonly="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-purple">
+                                            <i class="fa fa-line-chart"></i>
+                                        </div>
+                                        <div class="saas-title">Total Sales</div>
+                                        <div class="saas-value">
+                                            <field name="year_sale" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-danger">
+                                            <i class="fa fa-credit-card"></i>
+                                        </div>
+                                        <div class="saas-title">Total Expenses</div>
+                                        <div class="saas-value">
+                                            <field name="year_expense" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-3">
+                                    <div class="saas-card">
+                                        <div class="saas-icon-box bg-soft-success">
+                                            <i class="fa fa-trophy"></i>
+                                        </div>
+                                        <div class="saas-title">Net Profit</div>
+                                        <div class="saas-value" style="color: #0f5132;">
+                                            <field name="year_profit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                    
+                    <field name="currency_id" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_simple_accounting_dashboard" model="ir.actions.server">
+        <field name="name">Live Dashboard</field>
+        <field name="model_id" ref="simple_accounting.model_simple_accounting_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = env['simple.accounting.dashboard'].action_open_dashboard()
+        </field>
+    </record>
+
+</odoo>

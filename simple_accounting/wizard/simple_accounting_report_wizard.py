@@ -86,12 +86,13 @@ class SimpleAccountingReportWizard(models.TransientModel):
             
             today_bank_income = sum(income_txs.filtered(lambda t: t.payment_method == 'bank').mapped('amount'))
             today_cash_income = sum(income_txs.filtered(lambda t: t.payment_method == 'cash').mapped('amount'))
+            today_cod_income = sum(income_txs.filtered(lambda t: t.payment_method == 'cod').mapped('amount'))
             
             today_bank_expense = sum(expense_txs.filtered(lambda t: t.payment_method == 'bank').mapped('amount')) + sum(income_txs.filtered(lambda t: t.payment_method == 'bank').mapped('company_cost'))
             today_cash_expense = sum(expense_txs.filtered(lambda t: t.payment_method == 'cash').mapped('amount')) + sum(income_txs.filtered(lambda t: t.payment_method == 'cash').mapped('company_cost'))
             
-            # COD Expense: Explicitly log the Profit of COD incomes as an expense, plus any direct COD expenses
-            today_cod_expense = sum(expense_txs.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(income_txs.filtered(lambda t: t.payment_method == 'cod').mapped('net_impact'))
+            # COD Expense: Explicitly log the entire Amount of COD incomes as an expense, because SMSA keeps the whole amount
+            today_cod_expense = sum(expense_txs.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(income_txs.filtered(lambda t: t.payment_method == 'cod').mapped('amount'))
             
             # Ensure the total expense includes the COD expense (profit)
             today_expense = today_bank_expense + today_cash_expense + today_cod_expense
@@ -147,6 +148,9 @@ class SimpleAccountingReportWizard(models.TransientModel):
                 'today_cash_balance': today_cash_balance,
                 'cash_closing_balance': cash_closing_balance,
                 'today_expense_total': today_expense,
+                'today_cash_income': today_cash_income,
+                'today_bank_income': today_bank_income,
+                'today_cod_income': today_cod_income,
                 'today_bank_expense': today_bank_expense,
                 'today_cash_expense': today_cash_expense,
                 'today_cod_expense': today_cod_expense,
@@ -160,6 +164,7 @@ class SimpleAccountingReportWizard(models.TransientModel):
             'company_name': self.env.company.name,
             'currency': self.env.company.currency_id.symbol,
             'print_time': fields.Datetime.now(),
+            'current_user': self.env.user.name,
         }
         
         # Prepare the report action

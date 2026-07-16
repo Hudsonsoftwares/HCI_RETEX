@@ -51,6 +51,7 @@ class SmsaSettlementReportWizard(models.TransientModel):
             'company_name': self.env.company.name,
             'currency': self.env.company.currency_id.symbol,
             'print_time': fields.Datetime.now(),
+            'current_user': self.env.user.name,
             
             'cash_bank_txs': cash_bank_txs.read(['date', 'name', 'cargo_invoice_id', 'shipper_name', 'tracking_no', 'payment_method', 'amount', 'company_cost', 'net_impact']),
             'cod_txs': cod_txs.read(['date', 'name', 'cargo_invoice_id', 'shipper_name', 'tracking_no', 'payment_method', 'amount', 'company_cost', 'net_impact']),

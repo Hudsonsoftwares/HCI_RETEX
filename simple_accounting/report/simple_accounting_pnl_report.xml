@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_simple_accounting_pnl" model="ir.actions.report">
+        <field name="name">Profit and Loss Report</field>
+        <field name="model">simple.accounting.pnl.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">simple_accounting.report_simple_accounting_pnl</field>
+        <field name="report_file">simple_accounting.report_simple_accounting_pnl</field>
+        <field name="print_report_name">'Profit_Loss_Report_%s_%s' % (object.start_date, object.end_date)</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="paperformat_id" ref="simple_accounting.paperformat_simple_accounting_ledger"/>
+    </record>
+
+    <template id="report_simple_accounting_pnl">
+        <t t-call="web.html_container">
+            <div class="article o_report_no_header" style="margin: 0; padding: 20px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; color: #1a1a1a;">
+                    
+                    <!-- Dark Header Block -->
+                    <div style="background-color: #0b0f19; color: #ffffff; border-radius: 8px; padding: 20px 30px; margin-bottom: 30px;">
+                        <!-- Company Names -->
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; color: #ffffff;">
+                            <tr>
+                                <td style="width: 50%; text-align: left; vertical-align: middle;">
+                                    <h2 style="margin: 0; font-size: 20px; font-weight: bold; color: #ffffff;">Retex Cargo Express</h2>
+                                </td>
+                                <td style="width: 50%; text-align: right; vertical-align: middle;" dir="rtl">
+                                    <h2 style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff;">مؤسسة قافلة السرعة للشحن</h2>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <!-- Divider & Tax Info -->
+                        <div style="border-top: 1px solid #334155; border-bottom: 1px solid #334155; padding: 8px 0; text-align: center; font-size: 10px; color: #94a3b8; margin-bottom: 15px;">
+                            CR: 7026399282 | VAT: 310248611400003
+                        </div>
+                        
+                        <!-- Report Title & Metadata -->
+                        <div style="text-align: center;">
+                            <h1 style="margin: 0 0 5px 0; font-size: 20px; font-weight: bold; letter-spacing: 1px; color: #ffffff;">PROFIT AND LOSS REPORT</h1>
+                            <div style="font-size: 11px; color: #94a3b8;">
+                                Date: <strong style="color: #ffffff;"><t t-esc="form['start_date']"/></strong> to <strong style="color: #ffffff;"><t t-esc="form['end_date']"/></strong> 
+                                | User: <strong style="color: #ffffff;"><t t-esc="current_user"/></strong> 
+                                | Generated: <strong style="color: #ffffff;"><t t-esc="print_time"/></strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- OVERALL FINANCIAL SUMMARY -->
+                    <h3 style="background-color: #f1f5f9; padding: 10px 15px; border-left: 4px solid #0f172a; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; text-transform: uppercase;">
+                        OVERALL FINANCIAL SUMMARY
+                    </h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 12px;">
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 12px 5px; color: #64748b;">Total Income (SAR)</td>
+                            <td style="padding: 12px 5px; text-align: right;"><t t-esc="'{0:,.2f}'.format(summary['total_sales'])"/> SR</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 12px 5px; color: #64748b;">Total Expense (SAR)</td>
+                            <td style="padding: 12px 5px; text-align: right;"><t t-esc="'{0:,.2f}'.format(summary['total_expenses'])"/> SR</td>
+                        </tr>
+                        <tr style="background-color: #0f172a; color: #ffffff; font-weight: bold;">
+                            <td style="padding: 12px 5px;">NET PROFIT / LOSS</td>
+                            <td t-att-style="'padding: 12px 5px; text-align: right; color: ' + ('#16a34a;' if summary['net_profit'] &gt;= 0 else '#ef4444;')">
+                                <t t-esc="'{0:,.2f}'.format(summary['net_profit'])"/> SR
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <!-- DETAILED TRANSACTIONS LEDGER -->
+                    <h3 style="background-color: #f1f5f9; padding: 10px 15px; border-left: 4px solid #0f172a; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; text-transform: uppercase;">
+                        DETAILED TRANSACTIONS LEDGER
+                    </h3>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #0f172a;">
+                                <th style="padding: 10px 5px; text-align: left;">DATE</th>
+                                <th style="padding: 10px 5px; text-align: left;">DESCRIPTION</th>
+                                <th style="padding: 10px 5px; text-align: left;">CATEGORY</th>
+                                <th style="padding: 10px 5px; text-align: left;">TYPE</th>
+                                <th style="padding: 10px 5px; text-align: right;">AMOUNT (SAR)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="transactions" t-as="tx">
+                                <tr style="border-bottom: 1px solid #e2e8f0;">
+                                    <td style="padding: 10px 5px; font-weight: bold;"><t t-esc="tx['date']"/></td>
+                                    <td style="padding: 10px 5px; color: #64748b; text-transform: uppercase;"><t t-esc="tx['name']"/></td>
+                                    <td style="padding: 10px 5px; color: #64748b;"><t t-esc="tx['payment_method']"/></td>
+                                    
+                                    <!-- Type (Income/Expense) Colored -->
+                                    <td style="padding: 10px 5px; font-weight: bold;">
+                                        <t t-if="tx['type'] == 'income'">
+                                            <span style="color: #16a34a;">Income</span>
+                                        </t>
+                                        <t t-if="tx['type'] == 'expense'">
+                                            <span style="color: #ef4444;">Expense</span>
+                                        </t>
+                                    </td>
+                                    
+                                    <!-- Amount Colored -->
+                                    <td style="padding: 10px 5px; text-align: right; font-weight: bold;">
+                                        <t t-if="tx['type'] == 'income'">
+                                            <span style="color: #16a34a;">+<t t-esc="'{0:,.2f}'.format(tx['amount'])"/> SR</span>
+                                        </t>
+                                        <t t-if="tx['type'] == 'expense'">
+                                            <span style="color: #ef4444;">-<t t-esc="'{0:,.2f}'.format(tx['amount'])"/> SR</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Table Footer: Net Profit / Loss -->
+                    <table style="width: 100%; border-collapse: collapse; background-color: #0f172a; color: #ffffff; font-weight: bold; font-size: 12px; margin-top: -1px;">
+                        <tr>
+                            <td style="padding: 12px 10px; text-align: left;">NET PROFIT / LOSS</td>
+                            <td t-att-style="'padding: 12px 10px; text-align: right; color: ' + ('#16a34a;' if summary['net_profit'] &gt;= 0 else '#ef4444;')">
+                                <t t-esc="'{0:,.2f}'.format(summary['net_profit'])"/> SR
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Page Footer details -->
+                    <div style="text-align: center; margin-top: 40px; font-size: 9px; color: #94a3b8; border-top: 2px solid #0f172a; padding-top: 10px;">
+                        Profit and Loss Report | Generated on: <t t-esc="print_time"/> | Generated by: <t t-esc="current_user"/><br/>
+                        Retex Cargo Express | Riyadh, Saudi Arabia
+                    </div>
+
+                </div>
+        </t>
+    </template>
+</odoo>

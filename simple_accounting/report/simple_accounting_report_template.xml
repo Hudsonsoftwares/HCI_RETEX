@@ -4,6 +4,36 @@
         <t t-call="web.html_container">
             <div class="article o_report_no_header" style="margin: 0; padding: 20px; font-family: 'Arial', sans-serif;">
                 
+                <!-- Dark Header Block (Matches PnL Report Style) -->
+                <div style="background-color: #0b0f19; color: #ffffff; border-radius: 8px; padding: 20px 30px; margin-bottom: 20px;">
+                    <!-- Company Names -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; color: #ffffff;">
+                        <tr>
+                            <td style="width: 50%; text-align: left; vertical-align: middle;">
+                                <h2 style="margin: 0; font-size: 20px; font-weight: bold; color: #ffffff;">Retex Cargo Express</h2>
+                            </td>
+                            <td style="width: 50%; text-align: right; vertical-align: middle;" dir="rtl">
+                                <h2 style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff;">مؤسسة قافلة السرعة للشحن</h2>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <!-- Divider & Tax Info -->
+                    <div style="border-top: 1px solid #334155; border-bottom: 1px solid #334155; padding: 8px 0; text-align: center; font-size: 10px; color: #94a3b8; margin-bottom: 15px;">
+                        CR: 7026399282 | VAT: 310248611400003
+                    </div>
+                    
+                    <!-- Report Title & Metadata -->
+                    <div style="text-align: center;">
+                        <h1 style="margin: 0 0 5px 0; font-size: 20px; font-weight: bold; letter-spacing: 1px; color: #ffffff; text-transform: uppercase;">ACCOUNTING LEDGER REPORT</h1>
+                        <div style="font-size: 11px; color: #94a3b8;">
+                            Date: <strong style="color: #ffffff;"><t t-esc="start_date"/></strong> to <strong style="color: #ffffff;"><t t-esc="end_date"/></strong> 
+                            | User: <strong style="color: #ffffff;"><t t-esc="current_user"/></strong> 
+                            | Generated: <strong style="color: #ffffff;"><t t-esc="print_time"/></strong>
+                        </div>
+                    </div>
+                </div>
+
                 <t t-foreach="days_data" t-as="day">
                     <!-- Day Header -->
                     <div style="background-color: #a5d6a7; border: 1px solid #000; text-align: center; padding: 5px; font-weight: bold; font-size: 16px; margin-top: 15px;">
@@ -15,7 +45,7 @@
                         <thead>
                             <tr style="background-color: #385a3a; color: #fff;">
                                 <th style="border: 1px solid #000; padding: 3px;">DATE</th>
-                                <th style="border: 1px solid #000; padding: 3px;">NO</th>
+                                <th style="border: 1px solid #000; padding: 3px;">METHOD</th>
                                 <th style="border: 1px solid #000; padding: 3px;">INV NO</th>
                                 <th style="border: 1px solid #000; padding: 3px;">SHIPPER NAME</th>
                                 <th style="border: 1px solid #000; padding: 3px;">MOBILE</th>
@@ -31,7 +61,7 @@
                             <t t-foreach="day['transactions']" t-as="tx">
                                 <tr>
                                     <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['date']"/></td>
-                                    <td style="border: 1px solid #000; padding: 3px;"></td> <!-- NO field not explicitly mapped -->
+                                    <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['payment_method'].upper()"/></td>
                                     <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['cargo_invoice_id']"/></td>
                                     <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['shipper_name']"/></td>
                                     <td style="border: 1px solid #000; padding: 3px;"><t t-esc="tx['mobile']"/></td>
@@ -77,9 +107,9 @@
                                 
                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-bottom: 10px;">
                                     <tr style="background-color: #a5d6a7;"><th colspan="2" style="border: 1px solid #000; padding: 2px;">PAYMENTS</th></tr>
-                                    <tr><td style="border: 1px solid #000; padding: 10px; width: 50%;"></td><td style="border: 1px solid #000; width: 50%;"></td></tr>
-                                    <tr><td style="border: 1px solid #000; padding: 10px;"></td><td style="border: 1px solid #000;"></td></tr>
-                                    <tr><td style="border: 1px solid #000; padding: 10px;"></td><td style="border: 1px solid #000;"></td></tr>
+                                    <tr><td style="border: 1px solid #000; padding: 2px; width: 50%; color: #2e7d32; font-size: 9px;">CASH</td><td style="border: 1px solid #000; width: 50%;"><t t-esc="day['today_cash_income']"/></td></tr>
+                                    <tr><td style="border: 1px solid #000; padding: 2px; color: #2e7d32; font-size: 9px;">BANK</td><td style="border: 1px solid #000;"><t t-esc="day['today_bank_income']"/></td></tr>
+                                    <tr><td style="border: 1px solid #000; padding: 2px; color: #2e7d32; font-size: 9px;">COD</td><td style="border: 1px solid #000;"><t t-esc="day['today_cod_income']"/></td></tr>
                                 </table>
                                 
                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
@@ -126,7 +156,7 @@
                                     <tr><td style="border: 1px solid #000; padding: 8px;"></td><td style="border: 1px solid #000;"></td></tr>
                                     
                                     <tr style="background-color: #a5d6a7;">
-                                        <td style="border: 1px solid #000; padding: 2px; color: #2e7d32;">TOTAL</td>
+                                        <td style="border: 1px solid #000; padding: 2px; color: #2e7d32;">TOTAL EXPENSE</td>
                                         <td style="border: 1px solid #000; padding: 2px; color: #2e7d32;"><t t-esc="day['today_expense_total']"/></td>
                                     </tr>
                                     <tr style="background-color: #a5d6a7;">

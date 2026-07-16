@@ -7,9 +7,16 @@
               sequence="10"/>
 
     <!-- Sub-menus -->
+    <menuitem id="menu_simple_accounting_dashboard"
+              name="Dashboard"
+              parent="menu_simple_accounting_root"
+              action="action_simple_accounting_dashboard"
+              sequence="5"/>
+              
     <menuitem id="menu_simple_accounting_transactions"
               name="Transactions"
               parent="menu_simple_accounting_root"
+              action="action_simple_accounting_transaction"
               sequence="10"/>
 
     <menuitem id="menu_simple_accounting_configuration"
