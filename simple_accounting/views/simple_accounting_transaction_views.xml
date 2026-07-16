@@ -45,37 +45,42 @@
                     </div>
                     
                     <group>
-                        <group string="GENERAL INFO">
+                        <group>
                             <field name="type" widget="radio" options="{'horizontal': true}" string="TYPE"/>
-                            <field name="payment_method" widget="radio" options="{'horizontal': true}" string="PAYMENT METHOD"/>
-                            <field name="category_id" string="CATEGORY"/>
-                            <field name="date" string="DATE &amp; TIME"/>
-                            <field name="user_id" widget="many2one_avatar_user" string="CREATED BY"/>
-                        </group>
-                        <group string="FINANCIALS">
-                            <field name="currency_id" invisible="1"/>
-                            <field name="company_cost" invisible="type != 'income'" widget="monetary" string="ACTUAL COST"/>
-                            <field name="selling_price" invisible="type != 'income'" widget="monetary" string="BILL AMOUNT"/>
-                            <hr invisible="type != 'income'"/>
-                            <field name="amount" readonly="type == 'income'" force_save="1" widget="monetary" style="font-weight: bold; font-size: 1.1em; color: #1e293b;" string="TOTAL AMOUNT"/>
-                            <field name="net_impact" widget="monetary" style="font-weight: bold; font-size: 1.2em;" decoration-success="net_impact &gt;= 0" decoration-danger="net_impact &lt; 0" string="NET PROFIT / LOSS"/>
                         </group>
                     </group>
-                    
+
+                    <group string="CARGO DOCUMENTATION" invisible="type != 'income'">
+                        <group>
+                            <field name="cargo_invoice_id" options="{'no_create': True}" style="font-weight: bold;" string="CARGO INVOICE"/>
+                            <field name="shipper_name" string="SHIPPER NAME"/>
+                            <field name="mobile" string="MOBILE"/>
+                        </group>
+                        <group>
+                            <field name="weight" string="WEIGHT"/>
+                            <field name="destination" string="DESTINATION"/>
+                            <field name="service" string="SERVICE (CARRIER)"/>
+                            <field name="tracking_no" string="TRACKING NO"/>
+                            <field name="cargo_gross_total" widget="monetary" decoration-bf="1" string="GROSS TOTAL (SAR)"/>
+                        </group>
+                    </group>
+
                     <notebook>
-                        <page string="CARGO DOCUMENTATION" invisible="type != 'income'">
+                        <page string="TRANSACTION DETAILS">
                             <group>
-                                <group>
-                                    <field name="cargo_invoice_id" options="{'no_create': True}" style="font-weight: bold;" string="CARGO INVOICE"/>
-                                    <field name="shipper_name" string="SHIPPER NAME"/>
-                                    <field name="mobile" string="MOBILE"/>
+                                <group string="GENERAL INFO">
+                                    <field name="payment_method" widget="radio" options="{'horizontal': true}" string="PAYMENT METHOD"/>
+                                    <field name="category_id" string="CATEGORY"/>
+                                    <field name="date" string="DATE &amp; TIME"/>
+                                    <field name="user_id" widget="many2one_avatar_user" string="CREATED BY"/>
                                 </group>
-                                <group>
-                                    <field name="weight" string="WEIGHT"/>
-                                    <field name="destination" string="DESTINATION"/>
-                                    <field name="service" string="SERVICE (CARRIER)"/>
-                                    <field name="tracking_no" string="TRACKING NO"/>
-                                    <field name="cargo_gross_total" widget="monetary" decoration-bf="1" string="GROSS TOTAL (SAR)"/>
+                                <group string="FINANCIALS">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_cost" invisible="type != 'income'" widget="monetary" string="ACTUAL COST"/>
+                                    <field name="selling_price" invisible="type != 'income'" widget="monetary" string="BILL AMOUNT"/>
+                                    <hr invisible="type != 'income'"/>
+                                    <field name="amount" readonly="type == 'income'" force_save="1" widget="monetary" style="font-weight: bold; font-size: 1.1em; color: #1e293b;" string="TOTAL AMOUNT"/>
+                                    <field name="net_impact" widget="monetary" style="font-weight: bold; font-size: 1.2em;" decoration-success="net_impact &gt;= 0" decoration-danger="net_impact &lt; 0" string="NET PROFIT / LOSS"/>
                                 </group>
                             </group>
                         </page>
