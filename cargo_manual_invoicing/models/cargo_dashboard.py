@@ -35,16 +35,16 @@ class CargoDashboard(models.Model):
             current_year = today_date.year
             
             # --- TODAY ---
-            today_invoices = all_invoices.filtered(lambda i: i.shipping_date == today_date)
+            today_invoices = all_invoices.filtered(lambda i: i.shipping_date and i.shipping_date.date() == today_date)
             rec.today_revenue = sum(today_invoices.mapped('gross_total'))
             rec.today_invoice_count = len(today_invoices)
             
             # --- THIS MONTH ---
-            month_invoices = all_invoices.filtered(lambda i: i.shipping_date and i.shipping_date.month == current_month and i.shipping_date.year == current_year)
+            month_invoices = all_invoices.filtered(lambda i: i.shipping_date and i.shipping_date.date().month == current_month and i.shipping_date.date().year == current_year)
             rec.month_revenue = sum(month_invoices.mapped('gross_total'))
             rec.month_invoice_count = len(month_invoices)
             
             # --- THIS YEAR ---
-            year_invoices = all_invoices.filtered(lambda i: i.shipping_date and i.shipping_date.year == current_year)
+            year_invoices = all_invoices.filtered(lambda i: i.shipping_date and i.shipping_date.date().year == current_year)
             rec.year_revenue = sum(year_invoices.mapped('gross_total'))
             rec.year_invoice_count = len(year_invoices)
