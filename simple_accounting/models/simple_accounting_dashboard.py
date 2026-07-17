@@ -38,7 +38,9 @@ class SimpleAccountingDashboard(models.Model):
             bank_txs = self.env['simple.accounting.transaction'].search([('payment_method', '=', 'bank')])
             rec.bank_balance = sum(bank_txs.mapped('net_impact'))
             
-            rec.total_profit = rec.cash_balance + rec.bank_balance
+            # All-time COD transactions
+            cod_txs = self.env['simple.accounting.transaction'].search([('payment_method', '=', 'cod')])
+            rec.total_profit = rec.cash_balance + rec.bank_balance + sum(cod_txs.mapped('net_impact'))
             
             # Context Date
             today_date = fields.Date.context_today(self)
@@ -58,7 +60,7 @@ class SimpleAccountingDashboard(models.Model):
             
             today_bank_exp = sum(expenses_today.filtered(lambda t: t.payment_method == 'bank').mapped('amount')) + sum(incomes_today.filtered(lambda t: t.payment_method == 'bank').mapped('company_cost'))
             today_cash_exp = sum(expenses_today.filtered(lambda t: t.payment_method == 'cash').mapped('amount')) + sum(incomes_today.filtered(lambda t: t.payment_method == 'cash').mapped('company_cost'))
-            today_cod_exp = sum(expenses_today.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(incomes_today.filtered(lambda t: t.payment_method == 'cod').mapped('amount'))
+            today_cod_exp = sum(expenses_today.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(incomes_today.filtered(lambda t: t.payment_method == 'cod').mapped('company_cost'))
             rec.today_expense = today_bank_exp + today_cash_exp + today_cod_exp
             rec.today_profit = rec.today_sale - rec.today_expense
             
@@ -73,7 +75,7 @@ class SimpleAccountingDashboard(models.Model):
             
             month_bank_exp = sum(expenses_month.filtered(lambda t: t.payment_method == 'bank').mapped('amount')) + sum(incomes_month.filtered(lambda t: t.payment_method == 'bank').mapped('company_cost'))
             month_cash_exp = sum(expenses_month.filtered(lambda t: t.payment_method == 'cash').mapped('amount')) + sum(incomes_month.filtered(lambda t: t.payment_method == 'cash').mapped('company_cost'))
-            month_cod_exp = sum(expenses_month.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(incomes_month.filtered(lambda t: t.payment_method == 'cod').mapped('amount'))
+            month_cod_exp = sum(expenses_month.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(incomes_month.filtered(lambda t: t.payment_method == 'cod').mapped('company_cost'))
             rec.month_expense = month_bank_exp + month_cash_exp + month_cod_exp
             rec.month_profit = rec.month_sale - rec.month_expense
             
@@ -88,7 +90,7 @@ class SimpleAccountingDashboard(models.Model):
             
             year_bank_exp = sum(expenses_year.filtered(lambda t: t.payment_method == 'bank').mapped('amount')) + sum(incomes_year.filtered(lambda t: t.payment_method == 'bank').mapped('company_cost'))
             year_cash_exp = sum(expenses_year.filtered(lambda t: t.payment_method == 'cash').mapped('amount')) + sum(incomes_year.filtered(lambda t: t.payment_method == 'cash').mapped('company_cost'))
-            year_cod_exp = sum(expenses_year.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(incomes_year.filtered(lambda t: t.payment_method == 'cod').mapped('amount'))
+            year_cod_exp = sum(expenses_year.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(incomes_year.filtered(lambda t: t.payment_method == 'cod').mapped('company_cost'))
             rec.year_expense = year_bank_exp + year_cash_exp + year_cod_exp
             rec.year_profit = rec.year_sale - rec.year_expense
 

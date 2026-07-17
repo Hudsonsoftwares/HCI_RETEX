@@ -54,7 +54,7 @@ class SimpleAccountingPnlWizard(models.TransientModel):
         # Expenses + Cargo cost portions
         bank_exp = sum(expenses.filtered(lambda t: t.payment_method == 'bank').mapped('amount')) + sum(incomes.filtered(lambda t: t.payment_method == 'bank').mapped('company_cost'))
         cash_exp = sum(expenses.filtered(lambda t: t.payment_method == 'cash').mapped('amount')) + sum(incomes.filtered(lambda t: t.payment_method == 'cash').mapped('company_cost'))
-        cod_exp = sum(expenses.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(incomes.filtered(lambda t: t.payment_method == 'cod').mapped('amount'))
+        cod_exp = sum(expenses.filtered(lambda t: t.payment_method == 'cod').mapped('amount')) + sum(incomes.filtered(lambda t: t.payment_method == 'cod').mapped('company_cost'))
         
         total_expenses = bank_exp + cash_exp + cod_exp
         net_profit = total_sales - total_expenses
